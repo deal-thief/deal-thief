@@ -1,7 +1,84 @@
 {% extends "base.html" %}
+
+{% block css %}
+
+	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/masterslider.css') }}" />
+	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/skins/default/style.css') }}" />
+
+{% endblock %}
+
+
 {% block body %}
-<main id="content" class="container">
+
+<main id="content" class="container-fluid">
   <section id="main" class="row">
+		<div class="master-slider ms-skin-default" id="masterslider">
+				<!-- new slide -->
+				<div class="ms-slide">
+							
+						<!-- slide background -->
+						<img src="masterslider/blank.gif" data-src="masterslider/images/1.jpg" alt="lorem ipsum dolor sit"/>    
+							
+						<!-- slide text layer -->
+						<div class="ms-layer ms-caption" style="top:10px; left:30px;">
+								Lorem ipsum dolor sit amet
+						</div>
+							
+				</div>
+				<!-- end of slide -->
+					
+				<!-- new slide -->
+				<div class="ms-slide">
+							
+						<!-- slide background -->
+						<img src="masterslider/blank.gif" data-src="masterslider/images/2.jpg" alt="lorem ipsum dolor sit"/>    
+							
+						<!-- slide text layer -->
+						<div class="ms-layer ms-caption" style="top:10px; left:30px;">
+								Lorem ipsum dolor sit amet
+						</div>
+							
+						<!-- linked slide -->
+						<a href="http://codecanyon.net/user/averta">Averta</a>
+							
+				</div>
+				<!-- end of slide -->
+					
+				<!-- new slide -->
+				<div class="ms-slide">
+							
+						<!-- slide background -->
+						<img src="masterslider/blank.gif" data-src="masterslider/images/3.jpg" alt="lorem ipsum dolor sit"/>    
+							
+						<!-- slide text layer -->
+						<div class="ms-layer ms-caption" style="top:10px; left:30px;">
+								Lorem ipsum dolor sit amet
+						</div>
+							
+						<!-- youtube video -->
+						<a href="http://www.youtube.com/embed/YHWkro9-e9Q?hd=1&wmode=opaque&controls=1&showinfo=0" data-type="video">Youtube video</a>
+							
+				</div>
+				<!-- end of slide -->
+			
+		</div>
+	<!-- end of masterslider -->
   </section>
 </main>
+
+{% endblock %}
+
+
+{% block js %}
+
+	<script src="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/masterslider.min.js') }}"></script>
+	<script>
+			var slider = new MasterSlider();
+			slider.setup('masterslider' , {
+							fullwidth: true,
+							height: 500
+					});
+			slider.control('arrows');
+	</script>
+
 {% endblock %}
