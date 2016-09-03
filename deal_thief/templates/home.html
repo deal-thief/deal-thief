@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block body %}
+<main id="content" class="container">
+  <section class="row">
+    <div class="col-xs-12">
+      <div class="text-right">
+      <a class="btn btn-primary" href="new-entry">New entry</a>
+      </div>
+    </div>
+  </section>
+  <section id="journals" class="row">
+    {% for journal in journal_entries %}
+    <div class="journal">
+      <div class="col-xs-12">
+      <h2><a href="/journal/{{ journal.id }}">{{journal.title}}</a></h2>
+      <h4>Date created: {{ journal.creation_date }}</h4>
+      <div class="entry-body">{{ journal.body | safe }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </section>
+</main>
+{% endblock %}
