@@ -4,4 +4,6 @@ from ..models import User, Search
 
 @view_config(route_name='home', renderer='../templates/home.html')
 def home_view(request):
-    return {}
+    return {
+        'page_title': 'Home' 
+    }
