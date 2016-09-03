@@ -11,59 +11,40 @@
 {% block body %}
 
 <main id="content" class="container-fluid">
-  <section id="main" class="row">
-		<div class="master-slider ms-skin-default" id="masterslider">
-				<!-- new slide -->
+  <section id="slider" class="row">
+		<div class="master-slider ms-skin-default" id="hotdeals-slider">
 				<div class="ms-slide">
-							
-						<!-- slide background -->
-						<img src="masterslider/blank.gif" data-src="masterslider/images/1.jpg" alt="lorem ipsum dolor sit"/>    
-							
-						<!-- slide text layer -->
-						<div class="ms-layer ms-caption" style="top:10px; left:30px;">
+						<img src="static/vendor/plugins/masterslider/style/blank.gif" data-src="static/assets/img/seattle.jpg" alt="lorem ipsum dolor sit"/>    
+						<div class="ms-layer ms-caption" style="top:10em; left:30px;">
 								Lorem ipsum dolor sit amet
 						</div>
-							
+						<!--<a href="/">Home</a>-->
 				</div>
-				<!-- end of slide -->
-					
-				<!-- new slide -->
-				<div class="ms-slide">
-							
-						<!-- slide background -->
-						<img src="masterslider/blank.gif" data-src="masterslider/images/2.jpg" alt="lorem ipsum dolor sit"/>    
-							
-						<!-- slide text layer -->
-						<div class="ms-layer ms-caption" style="top:10px; left:30px;">
-								Lorem ipsum dolor sit amet
-						</div>
-							
-						<!-- linked slide -->
-						<a href="http://codecanyon.net/user/averta">Averta</a>
-							
-				</div>
-				<!-- end of slide -->
-					
-				<!-- new slide -->
-				<div class="ms-slide">
-							
-						<!-- slide background -->
-						<img src="masterslider/blank.gif" data-src="masterslider/images/3.jpg" alt="lorem ipsum dolor sit"/>    
-							
-						<!-- slide text layer -->
-						<div class="ms-layer ms-caption" style="top:10px; left:30px;">
-								Lorem ipsum dolor sit amet
-						</div>
-							
-						<!-- youtube video -->
-						<a href="http://www.youtube.com/embed/YHWkro9-e9Q?hd=1&wmode=opaque&controls=1&showinfo=0" data-type="video">Youtube video</a>
-							
-				</div>
-				<!-- end of slide -->
-			
 		</div>
-	<!-- end of masterslider -->
   </section>
+	<section id="search-form" class="row">
+		<div class="col-md-3">
+			<h3>Find your best deals</h3>	
+		</div>
+		<div id="search-form-container" class="col-md-9" style="background:orange;">
+			<form class="form-inline">
+				<div class="form-group">
+					<label class="sr-only" for="exampleInputEmail3">Email address</label>
+					<input type="email" class="form-control" id="exampleInputEmail3" placeholder="Email">
+				</div>
+				<div class="form-group">
+					<label class="sr-only" for="exampleInputPassword3">Password</label>
+					<input type="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox"> Remember me
+					</label>
+				</div>
+				<button type="submit" class="btn btn-default">Sign in</button>
+			</form>
+		</div>
+	</section>
 </main>
 
 {% endblock %}
@@ -74,11 +55,11 @@
 	<script src="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/masterslider.min.js') }}"></script>
 	<script>
 			var slider = new MasterSlider();
-			slider.setup('masterslider' , {
-							fullwidth: true,
-							height: 500
-					});
-			slider.control('arrows');
+			slider.setup('hotdeals-slider' , {
+				layout: "fullscreen",
+				mouse: false,
+				fullscreenMargin: 300
+			});
 	</script>
 
 {% endblock %}
