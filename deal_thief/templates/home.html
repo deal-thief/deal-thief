@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block css %}
+
+	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/masterslider.css') }}" />
+	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/skins/default/style.css') }}" />
+
+{% endblock %}
+
+
+{% block body %}
+
+<main id="content" class="container-fluid">
+  <section id="slider" class="row">
+		<div class="master-slider ms-skin-default" id="hotdeals-slider">
+			<div class="ms-slide">
+				<img src="static/vendor/plugins/masterslider/style/blank.gif" data-src="static/assets/img/seattle.jpg" alt=""/>    
+				<div class="ms-layer ms-caption" style="top:10em; left:30px;">
+				</div>
+						<!--<a href="/">Home</a>-->
+			</div>
+			<div class="ms-slide">
+				<img src="static/vendor/plugins/masterslider/style/blank.gif" data-src="static/assets/img/london.jpg" alt=""/>    
+				<div class="ms-layer ms-caption" style="top:10em; left:30px;">
+				</div>
+						<!--<a href="/">Home</a>-->
+			</div>
+			<div class="ms-slide">
+				<img src="static/vendor/plugins/masterslider/style/blank.gif" data-src="static/assets/img/singapore.jpg" alt=""/>    
+				<div class="ms-layer ms-caption" style="top:10em; left:30px;">
+				</div>
+						<!--<a href="/">Home</a>-->
+			</div>
+		</div>
+  </section>
+	<section id="search-section" class="row">
+		<div id="search-title" class="col-sm-3">
+			<h3>Find your best deals</h3>	
+		</div>
+		<div id="search-form-container" class="col-sm-9">
+			<form id="search-form" class="form-inline">
+				<div class="form-group">
+					<input type="text" class="form-control" id="location" placeholder="Where to?">
+				</div>
+				<button type="submit" class="btn btn-primary">Find</button>
+			</form>
+		</div>
+	</section>
+</main>
+
+{% endblock %}
+
+
+{% block js %}
+
+	<script src="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/masterslider.min.js') }}"></script>
+	<script>
+			var slider = new MasterSlider();
+			slider.setup('hotdeals-slider' , {
+				layout: "fullscreen",
+				autoplay: true,
+				mouse: false,
+				view: 'flow',
+				shuffle: true,
+				fullscreenMargin: 230
+			});
+	</script>
+
+{% endblock %}
