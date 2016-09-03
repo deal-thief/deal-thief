@@ -1,4 +1,3 @@
--e git+https://github.com/deal-thief/deal-thief.git@559296ec4e9049b0616b5bac68dd05c099665234#egg=deal_thief
 Jinja2==2.8
 Mako==1.0.4
 MarkupSafe==0.23
