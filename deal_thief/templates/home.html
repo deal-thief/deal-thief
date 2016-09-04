@@ -10,7 +10,7 @@
 
 {% block body %}
 
-<main id="content" class="container-fluid">
+<main id="home-page" class="container-fluid">
   <section id="slider" class="row">
 		<div class="master-slider ms-skin-default" id="hotdeals-slider">
 			<div class="ms-slide">
@@ -40,7 +40,10 @@
 		<div id="search-form-container" class="col-sm-9">
 			<form id="search-form" class="form-inline">
 				<div class="form-group">
-					<input type="text" class="form-control" id="location" placeholder="Where to?">
+					<input type="text" class="form-control" id="location" name="location" placeholder="Where to?">
+				</div>
+				<div class="form-group">
+					<input type="date" class="form-control" id="date" name="date" value="{{ today_date }}"placeholder="Date">
 				</div>
 				<button type="submit" class="btn btn-primary">Find</button>
 			</form>
@@ -57,12 +60,11 @@
 	<script>
 			var slider = new MasterSlider();
 			slider.setup('hotdeals-slider' , {
-				layout: "fullscreen",
+				layout: 'autofill',
 				autoplay: true,
 				mouse: false,
 				view: 'flow',
 				shuffle: true,
-				fullscreenMargin: 230
 			});
 	</script>
 
