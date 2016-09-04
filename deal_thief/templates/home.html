@@ -43,12 +43,15 @@
 				<div class="form-group">
 					<input type="text" class="form-control" id="location" name="location" placeholder="Where to?">
 				</div>
-				<div class="input-daterange input-group" id="search-date">
+				<div class="form-group input-daterange input-group" id="search-date">
 					<input type="text" class="form-control" name="start" placeholder="Check in"/>
 					<span class="input-group-addon">to</span>
 					<input type="text" class="form-control" name="end" placeholder="Check out"/>
 				</div>
-				<button type="submit" class="btn btn-primary">Find</button>
+				<div class="form-group">
+					<a type="submit" class="btn btn-primary">Find</a>
+					<a href="/search"><small class= "text-center">Advanced search</small></a>
+				</div>
 			</form>
 		</div>
 	</section>
@@ -75,7 +78,8 @@
 	<script>
 	$('#search-date').datepicker({
 		autoclose: true,
-		startDate: new Date()
+		startDate: new Date(),
+		todayHighlight: true
 	});
 	</script>
 {% endblock %}
