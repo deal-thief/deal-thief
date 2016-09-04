@@ -96,11 +96,11 @@
 	}
 
 	#search-section #search-title {
-		padding-top: 4em;
+		padding-top: 3em;
 	}
 
 	#search-section #search-form {
-		margin-top: 5em;
+		margin-top: 4em;
 	}
 
 	#search-section #search-form-container {
@@ -109,6 +109,15 @@
 	}
 	
 	#search-form .form-group {
+		width: 100%;
+	}
+
+	#search-form .input-wrapper {
+		padding-left: 0.2em;
+		padding-right: 0.2em;
+	}
+
+	#search-form input {
 		width: 100%;
 	}
 }
