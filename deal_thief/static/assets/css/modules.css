@@ -100,12 +100,15 @@
 	}
 
 	#search-section #search-form {
-		margin: 3em;
 		margin-top: 5em;
 	}
 
 	#search-section #search-form-container {
 		background: #FF530D;
 		height: 100%
+	}
+	
+	#search-form .form-group {
+		width: 100%;
 	}
 }
