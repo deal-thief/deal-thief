@@ -4,6 +4,7 @@
 
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/masterslider.css') }}" />
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/skins/default/style.css') }}" />
+	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/datepicker/css/bootstrap-datepicker.min.css') }}" />
 
 {% endblock %}
 
@@ -42,8 +43,10 @@
 				<div class="form-group">
 					<input type="text" class="form-control" id="location" name="location" placeholder="Where to?">
 				</div>
-				<div class="form-group">
-					<input type="date" class="form-control" id="date" name="date" value="{{ today_date }}"placeholder="Date">
+				<div class="input-daterange input-group" id="search-date">
+					<input type="text" class="form-control" name="start" />
+					<span class="input-group-addon">to</span>
+					<input type="text" class="form-control" name="end" />
 				</div>
 				<button type="submit" class="btn btn-primary">Find</button>
 			</form>
@@ -57,6 +60,7 @@
 {% block js %}
 
 	<script src="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/masterslider.min.js') }}"></script>
+	<script src="{{ request.static_url('deal_thief:static/vendor/plugins/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
 	<script>
 			var slider = new MasterSlider();
 			slider.setup('hotdeals-slider' , {
@@ -67,5 +71,10 @@
 				shuffle: true,
 			});
 	</script>
-
+	
+	<script>
+	$('#search-date').datepicker({
+		autoclose: true	
+	});
+	</script>
 {% endblock %}
