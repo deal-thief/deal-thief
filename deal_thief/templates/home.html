@@ -16,7 +16,10 @@
 		<div class="master-slider ms-skin-default" id="hotdeals-slider">
 			<div class="ms-slide">
 				<img src="static/vendor/plugins/masterslider/style/blank.gif" data-src="static/assets/img/seattle.jpg" alt=""/>    
-				<div class="ms-layer ms-caption" style="top:10em; left:30px;">
+				<div class="ms-layer ms-caption">
+					<h1>SEATTLE, USA</h1>
+					<p>Starting at $150 per night</p>
+					<a href="/search" class="btn btn-primary">Book now</a>
 				</div>
 						<!--<a href="/">Home</a>-->
 			</div>
@@ -36,16 +39,18 @@
   </section>
 	<section id="search-section" class="row">
 		<div id="search-title" class="col-sm-3">
-			<h3>Find your best deals</h3>	
+			<h3>Secure your best deals, now!</h3>	
 		</div>
 		<div id="search-form-container" class="col-sm-9">
 			<form id="search-form" class="form-inline">
 				<div class="col-sm-5 input-wrapper">
 					<div class="form-group">
+						<label for="location">Destination</label>
 						<input type="text" class="form-control" id="location" name="location" placeholder="Where to?">
 					</div>
 				</div>
 				<div class="col-sm-4 input-wrapper">
+					<label for="date">Date</label>
 					<div class="form-group input-daterange input-group col-sm-4" id="search-date">
 						<input type="text" class="form-control" name="start" placeholder="Check in"/>
 						<span class="input-group-addon">to</span>
@@ -55,7 +60,7 @@
 				<div class="col-sm-3 input-wrapper">
 					<a type="submit" class="btn btn-primary">Search</a>
 				</div>
-				<div class="col-sm-3 input-wrapper">
+				<div class="col-sm-12 input-wrapper">
 					<a href="/search"><small class="text-center">Advanced search</small></a>
 				</div>
 			</form>
@@ -74,6 +79,7 @@
 			var slider = new MasterSlider();
 			slider.setup('hotdeals-slider' , {
 				layout: 'autofill',
+				layersMode: 'full',
 				autoplay: true,
 				mouse: false,
 				view: 'flow',
