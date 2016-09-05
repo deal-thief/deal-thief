@@ -27,6 +27,7 @@ def test_bad_route_404(dummy_request):
 
 # ---------Functional Tests-------------
 
+
 def test_layout_root_home(testapp):
     """Test layout root of home route."""
     response = testapp.get('/', status=200)
@@ -37,3 +38,12 @@ def test_layout_root_404(testapp):
     """Test layout root of 404 route."""
     response = testapp.get('/notfound', status=404)
     assert response.html.find('p').get_text() == "404 Page Not Found"
+
+
+# ------- Mike's Tests -------
+
+def test_build_url():
+    """Test the build url works from user input."""
+    from .views.default import build_url
+    user_input = ('seattle', '2016-09-06', '2016-09-08')
+    assert build_url(user_input) == '/search/results?city="seattle"&check-in="2016-09-6"&check-out="2016-09-8"'

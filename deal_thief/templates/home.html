@@ -42,23 +42,23 @@
 			<h3>Secure your best deals, now!</h3>	
 		</div>
 		<div id="search-form-container" class="col-sm-9">
-			<form id="search-form" class="form-inline">
+			<form id="search-form" class="form-inline" method="POST">
 				<div class="col-sm-5 input-wrapper">
 					<div class="form-group">
 						<label for="location">Destination</label>
-						<input type="text" class="form-control" id="location" name="location" placeholder="Where to?">
+						<input type="text" class="form-control" id="location" name="location" placeholder="Where to?" required>
 					</div>
 				</div>
 				<div class="col-sm-4 input-wrapper">
 					<label for="date">Date</label>
 					<div class="form-group input-daterange input-group col-sm-4" id="search-date">
-						<input type="text" class="form-control" name="start" placeholder="Check in"/>
+						<input type="text" class="form-control" name="start" placeholder="Check in" required/>
 						<span class="input-group-addon">to</span>
-						<input type="text" class="form-control" name="end" placeholder="Check out"/>
+						<input type="text" class="form-control" name="end" placeholder="Check out" required/>
 					</div>
 				</div>
 				<div class="col-sm-3 input-wrapper">
-					<a type="submit" class="btn btn-primary">Search</a>
+					<a type="submit" class="btn btn-primary" href='{{request.route_url("search")}}'>Search</a>
 				</div>
 				<div class="col-sm-12 input-wrapper">
 					<a href="/search"><small class="text-center">Advanced search</small></a>
