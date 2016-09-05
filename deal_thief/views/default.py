@@ -1,9 +1,10 @@
 from pyramid.view import view_config
-from ..models import User, Search
 from datetime import datetime
 from passlib.apps import custom_app_context as pwd_context
 from pyramid.httpexceptions import HTTPFound
-
+from pyramid.security import remember, forget
+from ..security import check_credentials
+from ..models import User, Search
 
 @view_config(route_name='home', renderer='../templates/home.html')
 def home_view(request):
@@ -48,6 +49,21 @@ def regiter_view(request):
 @view_config(route_name='login', renderer='../templates/login.html')
 def login_view(request):
     error = ''
+    if request.method == 'POST':
+        email = request.params.get('email', '')
+        password = request.params.get('password', '')
+        if email and password:
+            query = request.dbsession.query(User).filter_by(email=email)
+            stored_user = query.first()
+            if stored_user:
+                if check_credentials(email, password, stored_user):
+                    headers = remember(request, email)
+                    return HTTPFound(
+                            location=request.route_url('home'),
+                            headers=headers
+                    )
+        error = 'Unsuccessul, try again'
+
     return {
         'page_title': 'Login',
         'error': error
