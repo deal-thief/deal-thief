@@ -18,7 +18,8 @@ class User(Base):
     email = Column(Unicode(255), nullable=False)
     password = Column(Unicode(255), nullable=False)
     sign_up_date = Column(Date())
-    city = Column(Unicode(255))
+    city = Column(Unicode(255), nullable=False)
+    state = Column(Unicode(5), nullable=False)
     note = Column(UnicodeText())
     searches = relationship('Search')
 
