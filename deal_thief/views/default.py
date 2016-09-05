@@ -20,8 +20,8 @@ def home_view(request):
 def regiter_view(request):
     first_name = last_name = email = password = city = state = error = ''
     if request.method == 'POST':
-        first_name = request.params.get('first_name', '')
-        last_name = request.params.get('last_name', '')
+        first_name = request.params.get('first-name', '')
+        last_name = request.params.get('last-name', '')
         email = request.params.get('email', '')
         password = request.params.get('password', '')
         city = request.params.get('city', '')
@@ -47,6 +47,8 @@ def regiter_view(request):
 
 @view_config(route_name='login', renderer='../templates/login.html')
 def login_view(request):
+    error = ''
     return {
         'page_title': 'Login',
+        'error': error
     }
