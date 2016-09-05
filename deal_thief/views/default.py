@@ -5,9 +5,16 @@ from datetime import datetime
 @view_config(route_name='home', renderer='../templates/home.html')
 def home_view(request):
     slider = {
-                
+
     }
     return {
         'page_title': 'Home',
         'today_date': datetime.now().strftime("%Y-%m-%d")
+    }
+
+
+@view_config(route_name='login', renderer='../templates/login.html')
+def login_view(request):
+    return {
+        'page_title': 'Login',
     }
