@@ -1,10 +1,13 @@
 from pyramid.view import view_config
 from datetime import datetime
+from pyramid.httpexceptions import HTTPFound, HTTPNotFound
+import requests
 from passlib.apps import custom_app_context as pwd_context
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember, forget
 from ..security import check_credentials
 from ..models import User, Search
+
 
 @view_config(route_name='home', renderer='../templates/home.html')
 def home_view(request):
@@ -68,3 +71,21 @@ def login_view(request):
         'page_title': 'Login',
         'error': error
     }
+
+
+@view_config(route_name='search', renderer='../templates/search.html')
+def search_view(request):
+    """Give us our search view."""
+    from ..tools import create_url_for_api_location_id
+    from ..tools import create_url_for_hotel_list
+    location = request.params['location']
+    checkin = request.params['start']
+    checkout = request.params['end']
+    location_id_url = create_url_for_api_location_id(location)
+    location_id_unparsed = requests.get(location_id_url)
+    location_id = location_id_unparsed.json()['results'][0]['individual_id']
+    session_start_url = create_url_for_hotel_list(location_id, checkin, checkout)
+    headers = {'Content-Type': 'application/json'}
+    session = requests.get(session_start_url, headers=headers)
+    import pdb; pdb.set_trace()
+    return {}
