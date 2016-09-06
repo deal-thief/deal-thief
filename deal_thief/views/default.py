@@ -82,6 +82,5 @@ def search_view(request):
     checkout = request.params['end']
     location_id_url = create_url_for_api_location_id(location)
     location_id_unparsed = requests.get(location_id_url)
-    location_id = location_id_unparsed['results'][0]['individual_id']
-    import pdb; pdb.set_trace()
+    location_id = location_id_unparsed.json()['results'][0]['individual_id']
     return {}

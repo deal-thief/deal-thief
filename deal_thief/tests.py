@@ -82,3 +82,15 @@ def test_create_url_for_api_location_id():
     key = os.environ.get('SKYSCANNER_API_KEY')
     result = 'http://partners.api.skyscanner.net/apiservices/hotels/autosuggest/v2/US/USD/en-US/seattle?apikey=' + key
     assert create_url_for_api_location_id('seattle') == result
+
+
+def test_create_url_for_hotel_list():
+    """Test for getting hotel list."""
+    from .tools import create_url_for_hotel_list
+    key = os.environ.get('SKYSCANNER_API_KEY')
+    location_id = '27547145'
+    check_in = '2016-12-04'
+    check_out = '2016-12-10'
+    result = 'http://partners.api.skyscanner.net/apiservices/hotels/liveprices/v2/US/USD/en-US/' + location_id + check_in + check_out + '2/1?apiKey=' + key
+    assert create_url_for_hotel_list(location_id, check_in, check_out) == result
+    
