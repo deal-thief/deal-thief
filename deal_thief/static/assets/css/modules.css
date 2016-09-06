@@ -85,11 +85,13 @@
 }
 
 .form-signin input[type="password"] {
-  margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
+.form-signin button {
+	margin-top: 1em;
+}
 
 @media only screen and (max-width: 767px) {
 	#slider .ms-caption {
