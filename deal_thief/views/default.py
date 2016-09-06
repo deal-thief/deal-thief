@@ -18,7 +18,7 @@ def home_view(request):
 
 
 @view_config(route_name='register', renderer='../templates/register.html')
-def regiter_view(request):
+def register_view(request):
     first_name = last_name = email = password = city = state = error = ''
     if request.method == 'POST':
         first_name = request.params.get('first-name', '')
