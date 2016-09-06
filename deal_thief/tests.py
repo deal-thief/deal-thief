@@ -2,7 +2,6 @@ import pytest
 import os
 import transaction
 from pyramid import testing
-from passlib.apps import custom_app_context as pwd_context
 
 
 def test_home_view(dummy_request):
@@ -76,7 +75,7 @@ def test_layout_root_dashboard_not_logged_in(testapp):
     """Test layout root of home route."""
     response = testapp.get('/dashboard', status='3*')
     assert response.status_code == 302
-    
+
 
 def test_layout_root_404(testapp):
     """Test layout root of 404 route."""
