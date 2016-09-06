@@ -1,8 +1,8 @@
 import pytest
 import os
 import transaction
-
 from pyramid import testing
+from passlib.apps import custom_app_context as pwd_context
 
 
 def test_home_view(dummy_request):
@@ -28,16 +28,28 @@ def test_register_view(dummy_request):
     assert info['error'] == ''
 
 
-def test_check_credentials(dummy_request):
-    """Test check_credentials function"""
-    from .security import check_credentials
-    pass
+def test_verify_correct_credentials(test_user):
+    """Test verify_credential method with correct credentials."""
+    assert test_user.verify_credential('test@user.com', 'testpassword')
+
+
+def test_verify_incorrect_credentials(test_user):
+    """Test verify_credential method with incorrect credentials."""
+    assert not test_user.verify_credential('test@user.com', 'randompw')
+
+
+def test_verify_credentials_invalid_hash(test_user):
+    """Test verify_credential method when stored pw is not hashed."""
+    test_user.password = 'somethingnothashed'
+    assert not test_user.verify_credential('test@user.com', 'randompw')
+
 
 def test_bad_route_404(dummy_request):
     """Test bad route returns 404."""
     from .views.notfound import notfound_view
-    info = notfound_view(dummy_request)
+    notfound_view(dummy_request)
     assert dummy_request.response.status_code == 404
+
 
 # ---------Functional Tests-------------
 
@@ -60,9 +72,16 @@ def test_layout_root_register(testapp):
     assert response.html.find('title').get_text() == "Deal Thief | Register"
 
 
+def test_layout_root_dashboard_not_logged_in(testapp):
+    """Test layout root of home route."""
+    response = testapp.get('/dashboard', status='3*')
+    assert response.status_code == 302
+    
+
 def test_layout_root_404(testapp):
     """Test layout root of 404 route."""
-    response = testapp.get('/notfound', status=404)
+    response = testapp.get('/notfound', status='4*')
+    assert response.status_code == 404
     assert response.html.find('p').get_text() == "404 Page Not Found"
 
 
