@@ -89,3 +89,9 @@ ENV/
 .ropeproject
 .DS_Store
 db/
+
+# Mike Personal
+bin/
+lib64
+pip-selfcheck.json  
+pyvenv.cfg
