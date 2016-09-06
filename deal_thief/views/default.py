@@ -68,3 +68,16 @@ def login_view(request):
         'page_title': 'Login',
         'error': error
     }
+
+
+@view_config(route_name='logout')
+def logout_view(request):
+    """Clear cookie, log user out and redirect to home_view."""
+    headers = forget(request)
+    return HTTPFound(request.route_url('home'), headers=headers)
+
+
+@view_config(route_name='dashboard', renderer='../templates/dashboard.html', permission='private')
+def dashboard_view(request):
+    """Dashboard view for user."""
+    return {}
