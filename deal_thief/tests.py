@@ -40,10 +40,19 @@ def test_layout_root_404(testapp):
     assert response.html.find('p').get_text() == "404 Page Not Found"
 
 
-# ------- Mike's Tests -------
+# ------- Mike's Functional Tests -------
 
-def test_build_url():
+def test_build_url(dummy_request):
     """Test the build url works from user input."""
-    from .views.default import build_url
-    user_input = ('seattle', '2016-09-06', '2016-09-08')
-    assert build_url(user_input) == '/search/results?city="seattle"&check-in="2016-09-6"&check-out="2016-09-8"'
+    from .views.default import search_view
+    my_params = {'location': 'seattle', 'start': '10/22/2016', 'end': '10/24/2016'}
+    dummy_request.params.update(my_params)
+    assert dummy_request.params['location'] == 'seattle'
+
+
+def test_create_url_for_api_location_id():
+    """Test that we can make an GET call to our API."""
+    from .tools import create_url_for_api_location_id
+    key = os.environ.get('SKYSCANNER_API_KEY')
+    result = 'http://partners.api.skyscanner.net/apiservices/hotels/autosuggest/v2/US/USD/en-US/seattle?apikey=' + key
+    assert create_url_for_api_location_id('seattle') == result
