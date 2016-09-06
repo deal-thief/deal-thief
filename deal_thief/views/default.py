@@ -77,10 +77,15 @@ def login_view(request):
 def search_view(request):
     """Give us our search view."""
     from ..tools import create_url_for_api_location_id
+    from ..tools import create_url_for_hotel_list
     location = request.params['location']
     checkin = request.params['start']
     checkout = request.params['end']
     location_id_url = create_url_for_api_location_id(location)
     location_id_unparsed = requests.get(location_id_url)
     location_id = location_id_unparsed.json()['results'][0]['individual_id']
+    session_start_url = create_url_for_hotel_list(location_id, checkin, checkout)
+    headers = {'Content-Type': 'application/json'}
+    session = requests.get(session_start_url, headers=headers)
+    import pdb; pdb.set_trace()
     return {}
