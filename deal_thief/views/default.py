@@ -84,11 +84,12 @@ def logout_view(request):
 def dashboard_view(request):
     """Dashboard view for user."""
     return {}
-    
+
 @view_config(route_name='search', renderer='../templates/search.html')
 def search_view(request):
     """Give us our search view."""
     from ..tools import create_url_for_api_location_id, create_url_for_hotel_list
+    from ..tools import create_url_for_hotel_details, create_url_hotel_id_list
     location = request.params['location']
     checkin = request.params['start']
     checkout = request.params['end']
@@ -98,3 +99,9 @@ def search_view(request):
     session_start_url = create_url_for_hotel_list(location_id, checkin, checkout)
     headers = {'Content-Type': 'application/json'}
     session = requests.get(session_start_url, headers=headers)
+    hotel_detail_url = create_url_for_hotel_details(session.headers['Location'])
+    hotel_detail_unparsed = requests.get(hotel_detail_url)
+    hotel_id_list = hotel_detail_unparsed.json()['hotels_prices']
+    new_hotel_list_id = str(create_url_hotel_id_list(hotel_id_list))
+    import pdb; pdb.set_trace()
+    return {}

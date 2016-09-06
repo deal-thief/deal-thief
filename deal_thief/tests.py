@@ -93,3 +93,20 @@ def test_create_url_for_hotel_list():
     check_out = '12/10/2016'
     result = 'http://partners.api.skyscanner.net/apiservices/hotels/liveprices/v2/US/USD/en-US/27547145/2016-12-04/2016-12-10/2/1?apiKey=' + key
     assert create_url_for_hotel_list(location_id, check_in, check_out) == result
+
+
+def test_create_url_for_hotel_details():
+    """Test we get hotel details."""
+    from .tools import create_url_for_hotel_details
+    session_location_header = '/apiservices/hotels/liveprices/v2/{{sessionkey}}?apikey={{encryptedkey}}'
+    result = 'http://partners.api.skyscanner.net' + session_location_header
+    assert create_url_for_hotel_details(session_location_header) == result
+
+
+def test_create_url_hotel_id_list():
+    """Test we create hotel id list."""
+    from .tools import create_url_hotel_id_list
+    hotel_id_list = [{'agent_prices': [{'id': 1, 'price_total': 102}], 'id': 47173467},
+     {'agent_prices': [{'id': 124, 'price_total': 367}], 'id': 46948847},
+     {'agent_prices': [{'id': 47, 'price_total': 182}], 'id': 46941437}]
+    assert create_url_hotel_id_list(hotel_id_list) == [47173467, 46948847, 46941437]
