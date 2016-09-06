@@ -41,6 +41,7 @@ def test_bad_route_404(dummy_request):
 
 # ---------Functional Tests-------------
 
+
 def test_layout_root_home(testapp):
     """Test layout root of home route."""
     response = testapp.get('/', status=200)
@@ -63,3 +64,32 @@ def test_layout_root_404(testapp):
     """Test layout root of 404 route."""
     response = testapp.get('/notfound', status=404)
     assert response.html.find('p').get_text() == "404 Page Not Found"
+
+
+# ------- Mike's Functional Tests -------
+
+def test_build_url(dummy_request):
+    """Test the build url works from user input."""
+    from .views.default import search_view
+    my_params = {'location': 'seattle', 'start': '10/22/2016', 'end': '10/24/2016'}
+    dummy_request.params.update(my_params)
+    assert dummy_request.params['location'] == 'seattle'
+
+
+def test_create_url_for_api_location_id():
+    """Test that we can make an GET call to our API."""
+    from .tools import create_url_for_api_location_id
+    key = os.environ.get('SKYSCANNER_API_KEY')
+    result = 'http://partners.api.skyscanner.net/apiservices/hotels/autosuggest/v2/US/USD/en-US/seattle?apikey=' + key
+    assert create_url_for_api_location_id('seattle') == result
+
+
+def test_create_url_for_hotel_list():
+    """Test for getting hotel list."""
+    from .tools import create_url_for_hotel_list
+    key = os.environ.get('SKYSCANNER_API_KEY')
+    location_id = '27547145'
+    check_in = '12/04/2016'
+    check_out = '12/10/2016'
+    result = 'http://partners.api.skyscanner.net/apiservices/hotels/liveprices/v2/US/USD/en-US/27547145/2016-12-04/2016-12-10/2/1?apiKey=' + key
+    assert create_url_for_hotel_list(location_id, check_in, check_out) == result
