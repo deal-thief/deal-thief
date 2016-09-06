@@ -29,7 +29,12 @@ def create_url_for_hotel_details(session_location_header):
 
 def create_url_hotel_id_list(hotel_list_id):
     """Create hotel list to go into url."""
-    new_hotel_list_id = []
+    new_hotel_list_id = ''
     for idx in range(len(hotel_list_id)):
-        new_hotel_list_id.append(hotel_list_id[idx]['id'])
-    return new_hotel_list_id
+        new_hotel_list_id += str(hotel_list_id[idx]['id']) + ','
+    return new_hotel_list_id[:-1]
+
+def create_deep_link_url(hotel_ids, session_location_header):
+    """Create final url for deep link."""
+    session_and_key = session_location_header.split('/')[-1]
+    return SESSION_BASE_URL + '/apiservices/hotels/livedetails/v2/details/' + session_and_key + '&hotelIds=' + hotel_ids

@@ -109,4 +109,13 @@ def test_create_url_hotel_id_list():
     hotel_id_list = [{'agent_prices': [{'id': 1, 'price_total': 102}], 'id': 47173467},
      {'agent_prices': [{'id': 124, 'price_total': 367}], 'id': 46948847},
      {'agent_prices': [{'id': 47, 'price_total': 182}], 'id': 46941437}]
-    assert create_url_hotel_id_list(hotel_id_list) == [47173467, 46948847, 46941437]
+    assert create_url_hotel_id_list(hotel_id_list) == '47173467,46948847,46941437'
+
+
+def test_create_deep_link_url():
+    """"Test we make url for final get request."""
+    from .tools import create_deep_link_url
+    session_location_header = '/apiservices/hotels/livedetails/v2/details/{{sessionkey}}?apikey={{encryptedkey}}'
+    hotel_ids = '[47173467, 46948847, 46941437, 134640597, 82030446, 46946183, 46944732, 114724112, 46943171, 105973506]'
+    result = 'http://partners.api.skyscanner.net' + session_location_header + '&hotelIds=' + hotel_ids
+    assert create_deep_link_url(hotel_ids, session_location_header) == result
