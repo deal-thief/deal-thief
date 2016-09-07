@@ -13,7 +13,19 @@ from .models.meta import Base
 import transaction
 
 
-@pytest.fixture(scope="session")
+class MockRequest(object):
+    """MockRequest intended to be a better version of testing.DummyRequest."""
+
+    def __init__(self, **kwargs):
+        """Init a MockRequest instance."""
+        self.__dict__.update(kwargs)
+
+    def route_url(self, string):
+        """Mimic the pyramid.request.Request route_url."""
+        return '/{}'.format(string)
+
+
+@pytest.fixture(scope='session')
 def sqlengine(request):
     config = testing.setUp(settings={
         'sqlalchemy.url': 'sqlite:///:memory:'
@@ -32,7 +44,7 @@ def sqlengine(request):
     return engine
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope='function')
 def new_session(sqlengine, request):
     session_factory = get_session_factory(sqlengine)
     session = get_tm_session(session_factory, transaction.manager)
@@ -44,7 +56,7 @@ def new_session(sqlengine, request):
     return session
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope='function')
 def dummy_request(new_session):
     """Call a dummy request."""
     test_request = testing.DummyRequest()
@@ -52,7 +64,18 @@ def dummy_request(new_session):
     return test_request
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope='function')
+def mock_request(new_session):
+    """Fixture passing mock_request obj to tests."""
+    return MockRequest(
+            method='POST',
+            authenticated_userid=None,
+            dbsession=new_session,
+            params={}
+    )
+
+
+@pytest.fixture(scope='function')
 def testapp():
     """Setup TestApp."""
     from deal_thief import main
@@ -61,7 +84,7 @@ def testapp():
     return TestApp(app)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope='function')
 def test_user():
     """Create test_user object as an instance of User model."""
     test_user = User()

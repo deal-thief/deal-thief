@@ -2,6 +2,9 @@ import pytest
 import os
 import transaction
 from pyramid import testing
+from pyramid.httpexceptions import HTTPFound
+from passlib.apps import custom_app_context as pwd_context
+from .models import User, Search
 
 
 def test_home_view(dummy_request):
@@ -15,7 +18,36 @@ def test_login_view(dummy_request):
     """Test template is in login view."""
     from .views.default import login_view
     info = login_view(dummy_request)
+    assert dummy_request.response.status_code == 200
     assert info["page_title"] == 'Login'
+    assert info['error'] == ''
+
+
+def test_login_view_authenticated(mock_request):
+    """login_view should redirect to home when user is authenticated."""
+    from .views.default import login_view
+    mock_request.authenticated_userid = 'test@user.com'
+    response = login_view(mock_request)
+    assert isinstance(response, HTTPFound)
+    assert response.location == '/home'
+
+
+def test_login_view_post_success(mock_request):
+    """Test login_view when received a post method."""
+    from .views.default import login_view
+    mock_request.dbsession.add(User(
+                email='test@user.com',
+                password=pwd_context.encrypt('testpassword'),
+                first_name='Test',
+                last_name='User',
+                city='City',
+                state='WA'
+    ))
+    mock_request.params['email'] = 'test@user.com'
+    mock_request.params['password'] = 'testpassword'
+    response = login_view(mock_request)
+    assert isinstance(response, HTTPFound)
+    assert response.location == '/home'
 
 
 def test_register_view(dummy_request):
@@ -25,6 +57,50 @@ def test_register_view(dummy_request):
     assert dummy_request.response.status_code == 200
     assert info['page_title'] == 'Register'
     assert info['error'] == ''
+
+
+def test_register_view_post(mock_request):
+    """Test register_view when received a post method."""
+    from .views.default import register_view
+    mock_request.params['first-name'] = 'Test'
+    mock_request.params['last-name'] = 'User'
+    mock_request.params['email'] = 'test@user.com'
+    mock_request.params['password'] = 'testpassword'
+    mock_request.params['city'] = 'City'
+    mock_request.params['state'] = 'WA'
+    response = register_view(mock_request)
+    assert isinstance(response, HTTPFound)
+    assert response.location == '/home'
+
+
+def test_register_view_post_email_exists(mock_request):
+    """Test register_view when it is posted an email already existed."""
+    from .views.default import register_view
+    mock_request.params['first-name'] = 'Test'
+    mock_request.params['last-name'] = 'User'
+    mock_request.params['email'] = 'test@user.com'
+    mock_request.params['password'] = 'testpassword'
+    mock_request.params['city'] = 'City'
+    mock_request.params['state'] = 'WA'
+    mock_request.dbsession.add(User(
+                email='test@user.com',
+                password=pwd_context.encrypt('testpassword'),
+                first_name='Test',
+                last_name='User',
+                city='City',
+                state='WA'
+    ))
+    response = register_view(mock_request)
+    assert response['error'] == 'Email existed'
+
+
+def test_register_view_authenticated(mock_request):
+    """register_view should redirect to home when user is authenticated."""
+    from .views.default import register_view
+    mock_request.authenticated_userid = 'test@user.com'
+    response = register_view(mock_request)
+    assert isinstance(response, HTTPFound)
+    assert response.location == '/home'
 
 
 def test_verify_correct_credentials(test_user):
@@ -43,6 +119,28 @@ def test_verify_credentials_invalid_hash(test_user):
     assert not test_user.verify_credential('test@user.com', 'randompw')
 
 
+def test_logout_view(mock_request):
+    """Test logout_view, make sure it return a HTTPFound obj."""
+    from .views.default import logout_view
+    response = logout_view(mock_request)
+    assert isinstance(response, HTTPFound)
+
+
+def test_dashboard_view(dummy_request):
+    """Test dashboard_view."""
+    from .views.default import dashboard_view
+    response = dashboard_view(dummy_request)
+    assert response['page_title'] == 'Dashboard'
+    assert dummy_request.response.status_code == 200
+
+
+def test_forbidden_view(mock_request):
+    """Test forbidden_view, make sure it return a HTTPFound obj."""
+    from .views.notfound import forbidden_view
+    response = forbidden_view(mock_request)
+    assert isinstance(response, HTTPFound)
+
+
 def test_bad_route_404(dummy_request):
     """Test bad route returns 404."""
     from .views.notfound import notfound_view
@@ -55,19 +153,22 @@ def test_bad_route_404(dummy_request):
 
 def test_layout_root_home(testapp):
     """Test layout root of home route."""
-    response = testapp.get('/', status=200)
+    response = testapp.get('/')
+    assert response.status_code == 200
     assert response.html.find('title').get_text() == "Deal Thief | Home"
 
 
 def test_layout_root_login(testapp):
     """Test layout root of home route."""
-    response = testapp.get('/login', status=200)
+    response = testapp.get('/login')
+    assert response.status_code == 200
     assert response.html.find('title').get_text() == "Deal Thief | Login"
 
 
-def test_layout_root_register(testapp):
+def test_layout_root_register_get(testapp):
     """Test layout root of home route."""
-    response = testapp.get('/register', status=200)
+    response = testapp.get('/register')
+    assert response.status_code == 200
     assert response.html.find('title').get_text() == "Deal Thief | Register"
 
 
