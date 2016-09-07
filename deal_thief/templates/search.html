@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
-
 {% block body %}
-
 <main id='search-page' class="container-fluid">
     <section>
         <div id="search-form-container" class="col-sm-9">
@@ -29,9 +27,14 @@
             </form>
         </div>
         <div>
+          {% if hotel_info %}
+            {% for hotel in hotel_info %}
             <article>
-                Hotels will go here. 
+                {{ hotel.name }}
             </article>
+            {% endfor %}
+          {% endif %}
         </div>
     </section>
+
 {% endblock %}
