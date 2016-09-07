@@ -32,6 +32,8 @@ def test_login_view_authenticated(mock_request):
 def test_login_view_post(mock_request):
     """Test login_view when received a post method."""
     from .views.default import login_view
+    mock_request.params['email'] = 'test@user.com'
+    mock_request.params['password'] = 'testpassword'
     response = login_view(mock_request)
     assert isinstance(response, HTTPFound)
     assert response.location == '/home'
@@ -49,6 +51,12 @@ def test_register_view(dummy_request):
 def test_register_view_post(mock_request):
     """Test register_view when received a post method."""
     from .views.default import register_view
+    mock_request.params['first-name'] = 'Test'
+    mock_request.params['last-name'] = 'User'
+    mock_request.params['email'] = 'test@user.com'
+    mock_request.params['password'] = 'testpassword'
+    mock_request.params['city'] = 'City'
+    mock_request.params['state'] = 'WA'
     response = register_view(mock_request)
     assert isinstance(response, HTTPFound)
     assert response.location == '/home'

@@ -63,11 +63,14 @@ def dummy_request(new_session):
     test_request.dbsession = new_session
     return test_request
 
+
 @pytest.fixture(scope='function')
-def mock_request():
+def mock_request(new_session):
+    """Fixture passing mock_request obj to every test."""
     return MockRequest(
             method='POST',
             authenticated_userid=None,
+            dbsession=new_session,
             params={}
     )
 
