@@ -93,6 +93,18 @@
 	margin-top: 1em;
 }
 
+.deal-block {
+	border: 1px solid;
+}
+
+.deeplink {
+	border: 1px solid;
+}
+
+.custom-nav {
+	background: linear-gradient(to right, #FF530D 50%, #31353E 50%);
+}
+
 @media only screen and (max-width: 767px) {
 	#slider .ms-caption {
 		margin-top: 18% !important;
@@ -144,4 +156,9 @@
 	#search-form input {
 		width: 100%;
 	}
+
+	#search-page form .btn {
+		margin-top: 1.82em;
+	}
 }
+

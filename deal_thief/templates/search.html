@@ -8,11 +8,11 @@
 
 {% block body %}
 
-<main id='search-page' class="container-fluid">
+<main id="search-page" class="container">
   <div class="row">
-    <div id="search-form-container" class="col-sm-9">
+    <div id="search-form-container" class="col-sm-12">
       <form id="search-form" class="form-inline" method="GET">
-        <div class="col-sm-5 input-wrapper">
+        <div class="col-sm-5 col-sm-offset-1 input-wrapper">
           <div class="form-group">
             <label for="location">Destination</label>
             <input type="text" class="form-control" id="location" name="location" placeholder="Where to?" required>
@@ -26,11 +26,8 @@
             <input type="text" class="form-control" name="end" placeholder="Check out" required/>
           </div>
         </div>
-        <div class="col-sm-3 input-wrapper">
-            <a type="submit" class="btn btn-primary">Search</a>
-        </div>
-        <div class="col-sm-12 input-wrapper">
-          <a href="/search"><small class="text-center">Advanced search</small></a>
+        <div class="col-sm-1 input-wrapper">
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
       </form>
     </div>
@@ -44,16 +41,14 @@
         <!-- <div class="pic col-md-3">
           <a href="{{ hotel.images }}"><img src="{{ hotel.images }}"></a>
         </div> -->
-        <section class="deal-block col-sm-9">
+        <section class="deal-block col-sm-11">
           <h1 class="">{{ hotel.name }}</h1>
           <h3 class="">{{ hotel.star_rating }}</h3>
           <div>{{ hotel.address }}</div>
           <div>{{ hotel.description }}</div>
         </section>
-        <div>
-          <h1>{{ hotel.nightly_price }}</h1>
-        </div>
-        <div class="deeplink col-sm-3">
+        <div class="deeplink col-sm-1">
+          <h1>${{ hotel.nightly_price }}</h1>
           <a class="btn btn-primary" href="{{ hotel.booking_deeplink }}" rel="nofollow">Book Deal</a>
         </div>
       </div>

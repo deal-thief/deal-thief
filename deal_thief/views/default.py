@@ -114,6 +114,13 @@ def profile_view(request):
     }
 
 
+@view_config(route_name='about', renderer='../templates/about.html')
+def about_view(request):
+    """View for about page."""
+    return {'page_title': 'About'}
+
+
+
 @view_config(route_name='search', renderer='../templates/search.html')
 def search_view(request):
     """Give us our search view."""
