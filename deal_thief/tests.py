@@ -32,6 +32,15 @@ def test_login_view_authenticated(mock_request):
     assert response.location == '/home'
 
 
+def test_login_view_fail(mock_request):
+    """login_view should return erro when incorrect credentials arr provided."""
+    from .views.default import login_view
+    mock_request.params['email'] = 'incorrectemail'
+    mock_request.params['password'] = 'incorrectpw'
+    response = login_view(mock_request)
+    assert response['error'] == 'Unsuccessful, try again'
+
+
 def test_login_view_post_success(mock_request):
     """Test login_view when received a post method."""
     from .views.default import login_view
@@ -57,6 +66,14 @@ def test_register_view(dummy_request):
     assert dummy_request.response.status_code == 200
     assert info['page_title'] == 'Register'
     assert info['error'] == ''
+
+
+def test_register_view_post_empty_field(mock_request):
+    """Test register_view posted with empty form."""
+    from .views.default import register_view
+    response = register_view(mock_request)
+    assert response['page_title'] == 'Register'
+    assert response['error'] == 'All fields are required'
 
 
 def test_register_view_post(mock_request):

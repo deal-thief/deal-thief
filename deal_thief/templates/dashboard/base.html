@@ -30,12 +30,12 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Saved searches<span class="sr-only">(current)</span></a></li>
-            <li><a href="/dashboard/profile">My profile</a></li>
+						<li {% if page_title == 'Dashboard' %} class="active" {% endif %}><a href="/dashboard">Saved searches</a></li>
+            <li {% if page_title == 'My profile' %} class="active" {% endif %}><a href="/profile">My profile</a></li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-					<h2>This is where saved searches are displayed</h2>
+					{% block body %} {% endblock %}
         </div>
       </div>
     </div>
