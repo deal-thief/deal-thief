@@ -1,4 +1,11 @@
 {% extends 'base.html' %}
+
+{% block css %}
+
+    <link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/datepicker/css/bootstrap-datepicker3.min.css') }}" />
+
+{% endblock %}
+
 {% block body %}
 <main id='search-page' class="container-fluid">
     <section>
@@ -37,4 +44,17 @@
         </div>
     </section>
 
+{% endblock %}
+
+{% block js %}
+
+    <script src="{{ request.static_url('deal_thief:static/vendor/plugins/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+
+    <script>
+    $('#search-date').datepicker({
+        autoclose: true,
+        startDate: new Date(),
+        todayHighlight: true
+    });
+    </script>
 {% endblock %}

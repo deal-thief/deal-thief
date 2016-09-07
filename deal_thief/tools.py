@@ -44,14 +44,23 @@ def create_parsed_hotel_info(hotels):
     """Create usable hotel info."""
     price_info = hotels["hotels_prices"]
     name_info = hotels["hotels"]
-    hotel_data = []
+    hotel_data = [
+        {'nightly_price': "Unavailable",
+            'price_total': 'Unavailable',
+            'description': 'Unavailable',
+            'address': 'Unavailable',
+            'latitude': 'Unavailable',
+            'longitude': 'Unavailable',
+            'star_rating': 'Unavailable', }]
+
     for idx in range(len(price_info)):
         hotel_data.append({"id": price_info[idx]["id"],
-         "nightly_price": price_info[idx]["agent_prices"][0]["price_per_room_night"],
-         "price_total": price_info[idx]["agent_prices"][0]["price_total"],
-         "booking_deeplink": price_info[idx]["agent_prices"][0]["booking_deeplink"]
+         "booking_deeplink": price_info[idx]["agent_prices"][0]["booking_deeplink"],
          })
-    for idx in range(len(hotel_data)):
+    for idx in range(len(price_info)):
+        if price_info[idx]["agent_prices"]:
+            hotel_data[idx]['nightly_price'] = price_info[idx]["agent_prices"][0]["price_per_room_night"]
+        hotel_data[idx]['price_total'] = price_info[idx]["agent_prices"][0]["price_total"]
         hotel_data[idx]["name"] = name_info[idx]["name"]
         hotel_data[idx]["description"] = name_info[idx]["description"]
         hotel_data[idx]["address"] = name_info[idx]["address"]
