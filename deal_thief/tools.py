@@ -44,14 +44,14 @@ def create_parsed_hotel_info(hotels):
     """Create usable hotel info."""
     price_info = hotels["hotels_prices"]
     name_info = hotels["hotels"]
+    image_info = hotels["agents"]
     hotel_data = []
     for idx in range(len(price_info)):
-        hotel_data.append({"id": price_info[idx]["id"],
-         "nightly_price": price_info[idx]["agent_prices"][0]["price_per_room_night"],
-         "price_total": price_info[idx]["agent_prices"][0]["price_total"],
-         "booking_deeplink": price_info[idx]["agent_prices"][0]["booking_deeplink"]
-         })
-    for idx in range(len(hotel_data)):
+        hotel_data.append({"id": price_info[idx]["id"]})
+        hotel_data[idx]["booking_deeplink"] = price_info[idx]["agent_prices"][0]["booking_deeplink"]
+        hotel_data[idx]["nightly_price"] = price_info[idx]["agent_prices"][0]["price_per_room_night"]
+        hotel_data[idx]["price_total"] = price_info[idx]["agent_prices"][0]["price_total"]
+        hotel_data[idx]["images"] = image_info[idx]["image_url"]
         hotel_data[idx]["name"] = name_info[idx]["name"]
         hotel_data[idx]["description"] = name_info[idx]["description"]
         hotel_data[idx]["address"] = name_info[idx]["address"]
