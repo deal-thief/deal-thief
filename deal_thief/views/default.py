@@ -112,5 +112,4 @@ def search_view(request):
     hotel_info_unparsed = requests.get(final_url)
     hotels = hotel_info_unparsed.json()
     final_info = create_parsed_hotel_info(hotels)
-    import pdb; pdb.set_trace()
-    return {}
+    return {"hotel_info": final_info}
