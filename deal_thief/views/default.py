@@ -72,7 +72,7 @@ def login_view(request):
                             location=request.route_url('home'),
                             headers=headers
                     )
-        error = 'Unsuccessul, try again'
+        error = 'Unsuccessful, try again'
 
     return {
         'page_title': 'Login',
@@ -89,13 +89,25 @@ def logout_view(request):
 
 @view_config(
         route_name='dashboard',
-        renderer='../templates/dashboard/base.html',
+        renderer='../templates/dashboard/saved_searches.html',
         permission='private'
 )
 def dashboard_view(request):
     """Dashboard view for user."""
     return {
         'page_title': 'Dashboard'
+    }
+
+
+@view_config(
+        route_name='profile',
+        renderer='../templates/dashboard/profile.html',
+        permission='private'
+)
+def profile_view(request):
+    """Profile view for user."""
+    return {
+        'page_title': 'My profile'
     }
 
 
