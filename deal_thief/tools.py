@@ -38,3 +38,24 @@ def create_deep_link_url(hotel_ids, session_location_header):
     """Create final url for deep link."""
     session_and_key = session_location_header.split('/')[-1]
     return SESSION_BASE_URL + '/apiservices/hotels/livedetails/v2/details/' + session_and_key + '&hotelIds=' + hotel_ids
+
+
+def create_parsed_hotel_info(hotels):
+    """Create usable hotel info."""
+    price_info = hotels["hotels_prices"]
+    name_info = hotels["hotels"]
+    hotel_data = []
+    for idx in range(len(price_info)):
+        hotel_data.append({"id": price_info[idx]["id"],
+         "nightly_price": price_info[idx]["agent_prices"][0]["price_per_room_night"],
+         "price_total": price_info[idx]["agent_prices"][0]["price_total"],
+         "booking_deeplink": price_info[idx]["agent_prices"][0]["booking_deeplink"]
+         })
+    for idx in range(len(hotel_data)):
+        hotel_data[idx]["name"] = name_info[idx]["name"]
+        hotel_data[idx]["description"] = name_info[idx]["description"]
+        hotel_data[idx]["address"] = name_info[idx]["address"]
+        hotel_data[idx]["latitude"] = name_info[idx]["latitude"]
+        hotel_data[idx]["longitude"] = name_info[idx]["longitude"]
+        hotel_data[idx]["star_rating"] = name_info[idx]["star_rating"]
+    return hotel_data

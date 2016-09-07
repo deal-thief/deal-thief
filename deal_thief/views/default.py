@@ -90,7 +90,7 @@ def search_view(request):
     """Give us our search view."""
     from ..tools import create_url_for_api_location_id, create_url_for_hotel_list
     from ..tools import create_url_for_hotel_details, create_url_hotel_id_list
-    from ..tools import create_deep_link_url
+    from ..tools import create_deep_link_url, create_parsed_hotel_info
     location = request.params['location']
     checkin = request.params['start']
     checkout = request.params['end']
@@ -106,5 +106,7 @@ def search_view(request):
     new_hotel_list_id = create_url_hotel_id_list(hotel_id_list)
     final_url = create_deep_link_url(new_hotel_list_id, session.headers['Location'])
     hotel_info_unparsed = requests.get(final_url)
+    hotels = hotel_info_unparsed.json()
+    final_info = create_parsed_hotel_info(hotels)
     import pdb; pdb.set_trace()
     return {}
