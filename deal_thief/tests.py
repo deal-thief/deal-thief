@@ -44,10 +44,24 @@ def test_verify_credentials_invalid_hash(test_user):
     assert not test_user.verify_credential('test@user.com', 'randompw')
 
 
-def test_logout_view(dummy_request):
+def test_logout_view(real_request):
     """Test logout_view, make sure it return a HTTPFound obj."""
     from .views.default import logout_view
-    response = logout_view(dummy_request)
+    response = logout_view(real_request)
+    assert isinstance(response, HTTPFound)
+
+
+def test_login_view_post(dummy_request):
+    from .views.default import login_view
+    dummy_request.method = 'POST'
+    response = login_view(dummy_request)
+    assert isinstance(response, HTTPFound)
+
+
+def test_forbidden_view(real_request):
+    """Test forbidden_view, make sure it return a HTTPFound obj."""
+    from .views.notfound import forbidden_view
+    response = forbidden_view(real_request)
     assert isinstance(response, HTTPFound)
 
 

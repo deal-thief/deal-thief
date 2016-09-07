@@ -11,7 +11,15 @@ from .models import (
 )
 from .models.meta import Base
 import transaction
+from pyramid.request import Request
 
+
+class DummyRequest(object):
+    def __init__(self):
+        pass
+
+    def route_url(self, string):
+        return '/random'
 
 @pytest.fixture(scope="session")
 def sqlengine(request):
@@ -50,6 +58,10 @@ def dummy_request(new_session):
     test_request = testing.DummyRequest()
     test_request.dbsession = new_session
     return test_request
+
+@pytest.fixture(scope='function')
+def real_request():
+    return DummyRequest()
 
 
 @pytest.fixture(scope="function")
