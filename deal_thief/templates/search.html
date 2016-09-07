@@ -1,54 +1,79 @@
 {% extends 'base.html' %}
-{% block body %}
-<main id='search-page' class="container-fluid">
-    <section>
-        <div id="search-form-container" class="col-sm-9">
-            <form id="search-form" class="form-inline" method="GET">
-                <div class="col-sm-5 input-wrapper">
-                    <div class="form-group">
-                        <label for="location">Destination</label>
-                        <input type="text" class="form-control" id="location" name="location" placeholder="Where to?" required>
-                    </div>
-                </div>
-                <div class="col-sm-4 input-wrapper">
-                    <label for="date">Date</label>
-                    <div class="form-group input-daterange input-group col-sm-4" id="search-date">
-                        <input type="text" class="form-control" name="start" placeholder="Check in" required/>
-                        <span class="input-group-addon">to</span>
-                        <input type="text" class="form-control" name="end" placeholder="Check out" required/>
-                    </div>
-                </div>
-                <div class="col-sm-3 input-wrapper">
-                    <a type="submit" class="btn btn-primary">Search</a>
-                </div>
-                <div class="col-sm-12 input-wrapper">
-                    <a href="/search"><small class="text-center">Advanced search</small></a>
-                </div>
-            </form>
-        </div>
-        <div>
-          {% if hotel_info %}
-            {% for hotel in hotel_info %}
-            <article>
-              <div class="pic">
-                <a href=""></a>
-              </div>
-              <section class="deal-block">
-                <h1 class="">{{ hotel.name }}</h1>
-                <h3 class="">{{ hotel.star_rating }}</h3>
-                <div>{{ hotel.address }}</div>
-                <div>{{ hotel.description }}</div>
-              </section>
-              <div>
-                <h1>{{ hotel.nightly_price }}</h1>
-              </div>
-              <div class="deeplink">
-                <a href="{{ hotel.booking_deeplink }}" rel="nofollow">Book Deal</a>
-              </div>
-            </article>
-            {% endfor %}
-          {% endif %}
-        </div>
-    </section>
 
+{% block css %}
+
+  <link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/datepicker/css/bootstrap-datepicker3.min.css') }}" />
+
+{% endblock %}
+
+{% block body %}
+
+<main id='search-page' class="container-fluid">
+  <section>
+    <div id="search-form-container" class="col-sm-9">
+      <form id="search-form" class="form-inline" method="GET">
+        <div class="col-sm-5 input-wrapper">
+          <div class="form-group">
+            <label for="location">Destination</label>
+            <input type="text" class="form-control" id="location" name="location" placeholder="Where to?" required>
+          </div>
+        </div>
+        <div class="col-sm-4 input-wrapper">
+          <label for="date">Date</label>
+          <div class="form-group input-daterange input-group col-sm-4" id="search-date">
+            <input type="text" class="form-control" name="start" placeholder="Check in" required/>
+            <span class="input-group-addon">to</span>
+            <input type="text" class="form-control" name="end" placeholder="Check out" required/>
+          </div>
+        </div>
+        <div class="col-sm-3 input-wrapper">
+            <a type="submit" class="btn btn-primary">Search</a>
+        </div>
+        <div class="col-sm-12 input-wrapper">
+          <a href="/search"><small class="text-center">Advanced search</small></a>
+        </div>
+      </form>
+    </div>
+    <div>
+
+    {% if hotel_info %}
+
+      {% for hotel in hotel_info %}
+
+      <div class="row">
+        <div class="pic col-md-3">
+          <a href="{{ hotel.images }}"></a>
+        </div>
+        <section class="deal-block col-md-6">
+          <h1 class="">{{ hotel.name }}</h1>
+          <h3 class="">{{ hotel.star_rating }}</h3>
+          <div>{{ hotel.address }}</div>
+          <div>{{ hotel.description }}</div>
+        </section>
+        <div>
+          <h1>{{ hotel.nightly_price }}</h1>
+        </div>
+        <div class="deeplink col-md-3">
+          <a href="{{ hotel.booking_deeplink }}" rel="nofollow">Book Deal</a>
+        </div>
+      </div>
+      {% endfor %}
+    {% endif %}
+    </div>
+  </section>
+</main>
+
+{% endblock %}
+
+{% block js %}
+
+<script src="{{ request.static_url('deal_thief:static/vendor/plugins/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+
+<script>
+$('#search-date').datepicker({
+  autoclose: true,
+  startDate: new Date(),
+  todayHighlight: true
+});
+</script>
 {% endblock %}
