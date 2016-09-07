@@ -2,6 +2,7 @@ import pytest
 import os
 import transaction
 from pyramid import testing
+from pyramid.httpexceptions import HTTPFound
 
 
 def test_home_view(dummy_request):
@@ -43,6 +44,13 @@ def test_verify_credentials_invalid_hash(test_user):
     assert not test_user.verify_credential('test@user.com', 'randompw')
 
 
+def test_logout_view(dummy_request):
+    """Test logout_view, make sure it return a HTTPFound obj."""
+    from .views.default import logout_view
+    response = logout_view(dummy_request)
+    assert isinstance(response, HTTPFound)
+
+
 def test_bad_route_404(dummy_request):
     """Test bad route returns 404."""
     from .views.notfound import notfound_view
@@ -55,19 +63,22 @@ def test_bad_route_404(dummy_request):
 
 def test_layout_root_home(testapp):
     """Test layout root of home route."""
-    response = testapp.get('/', status=200)
+    response = testapp.get('/')
+    assert response.status_code == 200
     assert response.html.find('title').get_text() == "Deal Thief | Home"
 
 
 def test_layout_root_login(testapp):
     """Test layout root of home route."""
-    response = testapp.get('/login', status=200)
+    response = testapp.get('/login')
+    assert response.status_code == 200
     assert response.html.find('title').get_text() == "Deal Thief | Login"
 
 
-def test_layout_root_register(testapp):
+def test_layout_root_register_get(testapp):
     """Test layout root of home route."""
-    response = testapp.get('/register', status=200)
+    response = testapp.get('/register')
+    assert response.status_code == 200
     assert response.html.find('title').get_text() == "Deal Thief | Register"
 
 

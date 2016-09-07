@@ -1,5 +1,4 @@
 from pyramid.view import view_config
-from datetime import datetime
 from pyramid.httpexceptions import HTTPFound
 import requests
 from passlib.apps import custom_app_context as pwd_context
@@ -19,7 +18,7 @@ def home_view(request):
 def register_view(request):
     if authenticated_userid(request):
         return HTTPFound(location=request.route_url('home'))
-    first_name = last_name = email = password = city = state = error = ''
+    error = ''
     if request.method == 'POST':
         first_name = request.params.get('first-name', '')
         last_name = request.params.get('last-name', '')
@@ -28,20 +27,24 @@ def register_view(request):
         city = request.params.get('city', '')
         state = request.params.get('state', '')
         if first_name and last_name and email and password and city and state:
-            new_user = User(
-                first_name=first_name,
-                last_name=last_name,
-                email=email,
-                password=pwd_context.encrypt(password),
-                city=city,
-                state=state
-            )
-            request.dbsession.add(new_user)
-            headers = remember(request, email)
-            return HTTPFound(
-                    location=request.route_url('home'),
-                    headers=headers
-            )
+            if request.dbsession.query(User).\
+                    filter_by(email=email).count() == 0:
+                new_user = User(
+                    first_name=first_name,
+                    last_name=last_name,
+                    email=email,
+                    password=pwd_context.encrypt(password),
+                    city=city,
+                    state=state
+                )
+                request.dbsession.add(new_user)
+                headers = remember(request, email)
+                return HTTPFound(
+                        location=request.route_url('home'),
+                        headers=headers
+                )
+            else:
+                error = 'Email existed'
         else:
             error = 'All fields are required'
     return {
@@ -84,11 +87,16 @@ def logout_view(request):
     return HTTPFound(request.route_url('home'), headers=headers)
 
 
-@view_config(route_name='dashboard', renderer='../templates/dashboard/base.html', permission='private')
+@view_config(
+        route_name='dashboard',
+        renderer='../templates/dashboard/base.html',
+        permission='private'
+)
 def dashboard_view(request):
     """Dashboard view for user."""
     return {}
-    
+
+
 @view_config(route_name='search', renderer='../templates/search.html')
 def search_view(request):
     """Give us our search view."""
