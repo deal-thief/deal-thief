@@ -25,7 +25,7 @@ class MockRequest(object):
         return '/{}'.format(string)
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='session')
 def sqlengine(request):
     config = testing.setUp(settings={
         'sqlalchemy.url': 'sqlite:///:memory:'
@@ -44,7 +44,7 @@ def sqlengine(request):
     return engine
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope='function')
 def new_session(sqlengine, request):
     session_factory = get_session_factory(sqlengine)
     session = get_tm_session(session_factory, transaction.manager)
@@ -56,7 +56,7 @@ def new_session(sqlengine, request):
     return session
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope='function')
 def dummy_request(new_session):
     """Call a dummy request."""
     test_request = testing.DummyRequest()
@@ -75,7 +75,7 @@ def mock_request(new_session):
     )
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope='function')
 def testapp():
     """Setup TestApp."""
     from deal_thief import main
