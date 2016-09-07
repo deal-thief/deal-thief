@@ -3,6 +3,8 @@ import os
 import transaction
 from pyramid import testing
 from pyramid.httpexceptions import HTTPFound
+from passlib.apps import custom_app_context as pwd_context
+from .models import User, Search
 
 
 def test_home_view(dummy_request):
@@ -24,14 +26,23 @@ def test_login_view(dummy_request):
 def test_login_view_authenticated(mock_request):
     """login_view should redirect to home when user is authenticated."""
     from .views.default import login_view
+    mock_request.authenticated_userid = 'test@user.com'
     response = login_view(mock_request)
     assert isinstance(response, HTTPFound)
     assert response.location == '/home'
 
 
-def test_login_view_post(mock_request):
+def test_login_view_post_success(mock_request):
     """Test login_view when received a post method."""
     from .views.default import login_view
+    mock_request.dbsession.add(User(
+                email='test@user.com',
+                password=pwd_context.encrypt('testpassword'),
+                first_name='Test',
+                last_name='User',
+                city='City',
+                state='WA'
+    ))
     mock_request.params['email'] = 'test@user.com'
     mock_request.params['password'] = 'testpassword'
     response = login_view(mock_request)
