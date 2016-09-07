@@ -9,7 +9,7 @@
 {% block body %}
 
 <main id='search-page' class="container-fluid">
-  <section>
+  <div class="row">
     <div id="search-form-container" class="col-sm-9">
       <form id="search-form" class="form-inline" method="GET">
         <div class="col-sm-5 input-wrapper">
@@ -34,17 +34,17 @@
         </div>
       </form>
     </div>
-    <div>
+  </div>
 
     {% if hotel_info %}
 
       {% for hotel in hotel_info %}
 
       <div class="row">
-        <div class="pic col-md-3">
-          <a href="{{ hotel.images }}"></a>
-        </div>
-        <section class="deal-block col-md-6">
+        <!-- <div class="pic col-md-3">
+          <a href="{{ hotel.images }}"><img src="{{ hotel.images }}"></a>
+        </div> -->
+        <section class="deal-block col-sm-9">
           <h1 class="">{{ hotel.name }}</h1>
           <h3 class="">{{ hotel.star_rating }}</h3>
           <div>{{ hotel.address }}</div>
@@ -53,14 +53,12 @@
         <div>
           <h1>{{ hotel.nightly_price }}</h1>
         </div>
-        <div class="deeplink col-md-3">
-          <a href="{{ hotel.booking_deeplink }}" rel="nofollow">Book Deal</a>
+        <div class="deeplink col-sm-3">
+          <a class="btn btn-primary" href="{{ hotel.booking_deeplink }}" rel="nofollow">Book Deal</a>
         </div>
       </div>
       {% endfor %}
     {% endif %}
-    </div>
-  </section>
 </main>
 
 {% endblock %}
