@@ -30,7 +30,21 @@
           {% if hotel_info %}
             {% for hotel in hotel_info %}
             <article>
-                {{ hotel.name }}
+              <div class="pic">
+                <a href=""></a>
+              </div>
+              <section class="deal-block">
+                <h1 class="">{{ hotel.name }}</h1>
+                <h3 class="">{{ hotel.star_rating }}</h3>
+                <div>{{ hotel.address }}</div>
+                <div>{{ hotel.description }}</div>
+              </section>
+              <div>
+                <h1>{{ hotel.nightly_price }}</h1>
+              </div>
+              <div class="deeplink">
+                <a href="{{ hotel.booking_deeplink }}" rel="nofollow">Book Deal</a>
+              </div>
             </article>
             {% endfor %}
           {% endif %}
