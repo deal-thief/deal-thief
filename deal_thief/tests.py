@@ -168,4 +168,4 @@ def test_create_parsed_hotel_info():
                   "star_rating": 0
                         }],
               }
-    assert len(create_parsed_hotel_info(hotels)) == 2
+    assert len(create_parsed_hotel_info(hotels)) == 3
