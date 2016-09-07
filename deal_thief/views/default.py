@@ -114,23 +114,61 @@ def profile_view(request):
     }
 
 
+def get_location_id(location):
+    """Get location id from API based on user input."""
+    location_id_url = create_url_for_api_location_id(location)
+    location_id_unparsed = requests.get(location_id_url)
+    location_id_unparsed.raise_for_status()
+    location_id = location_id_unparsed.json()['results'][0]['individual_id']
+    return location_id
+
+
+def get_session(location_id, checkin, checkout):
+    """Get session info from API."""
+    session_start_url = create_url_for_hotel_list(location_id, checkin, checkout)
+    session = requests.get(session_start_url, headers={'Content-Type': 'application/json'})
+    return session.headers['Location']
+
+
+def get_hotel_id_list(session):
+    """Get hotel id list from API."""
+    hotel_detail_url = create_url_for_hotel_details(session)
+    hotel_detail_unparsed = requests.get(hotel_detail_url)
+    hotel_id_list = hotel_detail_unparsed.json()['hotels_prices']
+    new_hotel_list_id = create_url_hotel_id_list(hotel_id_list)
+    return new_hotel_list_id
+
+
+def get_hotel_info(hotel_id_list, session):
+    """Get hotel info and prices from API."""
+    final_url = create_deep_link_url(hotel_id_list, session)
+    hotel_info_unparsed = requests.get(final_url)
+    hotels = hotel_info_unparsed.json()
+    final_info = create_parsed_hotel_info(hotels)
+    return final_info
+
+
 @view_config(route_name='search', renderer='../templates/search.html')
 def search_view(request):
     """Give us our search view."""
     location = request.params['location']
     checkin = request.params['start']
     checkout = request.params['end']
-    location_id_url = create_url_for_api_location_id(location)
-    location_id_unparsed = requests.get(location_id_url)
-    location_id = location_id_unparsed.json()['results'][0]['individual_id']
-    session_start_url = create_url_for_hotel_list(location_id, checkin, checkout)
-    session = requests.get(session_start_url, headers={'Content-Type': 'application/json'})
-    hotel_detail_url = create_url_for_hotel_details(session.headers['Location'])
-    hotel_detail_unparsed = requests.get(hotel_detail_url)
-    hotel_id_list = hotel_detail_unparsed.json()['hotels_prices']
-    new_hotel_list_id = create_url_hotel_id_list(hotel_id_list)
-    final_url = create_deep_link_url(new_hotel_list_id, session.headers['Location'])
-    hotel_info_unparsed = requests.get(final_url)
-    hotels = hotel_info_unparsed.json()
-    final_info = create_parsed_hotel_info(hotels)
+
+    location_id = get_location_id(location)
+    session = get_session(location_id, checkin, checkout)
+    hotel_id_list = get_hotel_id_list(session)
+    final_info = get_hotel_info(hotel_id_list, session)
     return {"hotel_info": final_info}
+
+
+'''
+request.session = {
+    (location, checkin, checkout) : {
+        'location_id': get_location_id(location),
+        'session': get_session(location, checkin, checkout),
+        'hotel_ids': get_hotel_ids(session),
+        'last_updates': datetime
+    }
+}
+'''
