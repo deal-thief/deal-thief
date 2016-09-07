@@ -73,6 +73,27 @@ def test_register_view_post(mock_request):
     assert response.location == '/home'
 
 
+def test_register_view_post_email_exists(mock_request):
+    """Test register_view when it is posted an email already existed."""
+    from .views.default import register_view
+    mock_request.params['first-name'] = 'Test'
+    mock_request.params['last-name'] = 'User'
+    mock_request.params['email'] = 'test@user.com'
+    mock_request.params['password'] = 'testpassword'
+    mock_request.params['city'] = 'City'
+    mock_request.params['state'] = 'WA'
+    mock_request.dbsession.add(User(
+                email='test@user.com',
+                password=pwd_context.encrypt('testpassword'),
+                first_name='Test',
+                last_name='User',
+                city='City',
+                state='WA'
+    ))
+    response = register_view(mock_request)
+    assert response['error'] == 'Email existed'
+
+
 def test_register_view_authenticated(mock_request):
     """register_view should redirect to home when user is authenticated."""
     from .views.default import register_view
