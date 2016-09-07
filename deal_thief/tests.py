@@ -16,7 +16,25 @@ def test_login_view(dummy_request):
     """Test template is in login view."""
     from .views.default import login_view
     info = login_view(dummy_request)
+    assert dummy_request.response.status_code == 200
     assert info["page_title"] == 'Login'
+    assert info['error'] == ''
+
+
+def test_login_view_authenticated(mock_request):
+    """login_view should redirect to home when user is authenticated."""
+    from .views.default import login_view
+    response = login_view(mock_request)
+    assert isinstance(response, HTTPFound)
+    assert response.location == '/home'
+
+
+def test_login_view_post(mock_request):
+    """Test login_view when received a post method."""
+    from .views.default import login_view
+    response = login_view(mock_request)
+    assert isinstance(response, HTTPFound)
+    assert response.location == '/home'
 
 
 def test_register_view(dummy_request):
@@ -26,6 +44,23 @@ def test_register_view(dummy_request):
     assert dummy_request.response.status_code == 200
     assert info['page_title'] == 'Register'
     assert info['error'] == ''
+
+
+def test_register_view_post(mock_request):
+    """Test register_view when received a post method."""
+    from .views.default import register_view
+    response = register_view(mock_request)
+    assert isinstance(response, HTTPFound)
+    assert response.location == '/home'
+
+
+def test_register_view_authenticated(mock_request):
+    """register_view should redirect to home when user is authenticated."""
+    from .views.default import register_view
+    mock_request.authenticated_userid = 'test@user.com'
+    response = register_view(mock_request)
+    assert isinstance(response, HTTPFound)
+    assert response.location == '/home'
 
 
 def test_verify_correct_credentials(test_user):
@@ -44,24 +79,25 @@ def test_verify_credentials_invalid_hash(test_user):
     assert not test_user.verify_credential('test@user.com', 'randompw')
 
 
-def test_logout_view(real_request):
+def test_logout_view(mock_request):
     """Test logout_view, make sure it return a HTTPFound obj."""
     from .views.default import logout_view
-    response = logout_view(real_request)
+    response = logout_view(mock_request)
     assert isinstance(response, HTTPFound)
 
 
-def test_login_view_post(dummy_request):
-    from .views.default import login_view
-    dummy_request.method = 'POST'
-    response = login_view(dummy_request)
-    assert isinstance(response, HTTPFound)
+def test_dashboard_view(dummy_request):
+    """Test dashboard_view."""
+    from .views.default import dashboard_view
+    response = dashboard_view(dummy_request)
+    assert response['page_title'] == 'Dashboard'
+    assert dummy_request.response.status_code == 200
 
 
-def test_forbidden_view(real_request):
+def test_forbidden_view(mock_request):
     """Test forbidden_view, make sure it return a HTTPFound obj."""
     from .views.notfound import forbidden_view
-    response = forbidden_view(real_request)
+    response = forbidden_view(mock_request)
     assert isinstance(response, HTTPFound)
 
 

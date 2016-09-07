@@ -11,15 +11,19 @@ from .models import (
 )
 from .models.meta import Base
 import transaction
-from pyramid.request import Request
 
 
-class DummyRequest(object):
-    def __init__(self):
-        pass
+class MockRequest(object):
+    """MockRequest intended to be a better version of testing.DummyRequest."""
+
+    def __init__(self, **kwargs):
+        """Init a MockRequest instance."""
+        self.__dict__.update(kwargs)
 
     def route_url(self, string):
-        return '/random'
+        """Mimic the pyramid.request.Request route_url."""
+        return '/{}'.format(string)
+
 
 @pytest.fixture(scope="session")
 def sqlengine(request):
@@ -60,8 +64,12 @@ def dummy_request(new_session):
     return test_request
 
 @pytest.fixture(scope='function')
-def real_request():
-    return DummyRequest()
+def mock_request():
+    return MockRequest(
+            method='POST',
+            authenticated_userid=None,
+            params={}
+    )
 
 
 @pytest.fixture(scope="function")
@@ -73,7 +81,7 @@ def testapp():
     return TestApp(app)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope='function')
 def test_user():
     """Create test_user object as an instance of User model."""
     test_user = User()

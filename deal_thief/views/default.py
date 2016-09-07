@@ -94,7 +94,9 @@ def logout_view(request):
 )
 def dashboard_view(request):
     """Dashboard view for user."""
-    return {}
+    return {
+        'page_title': 'Dashboard'
+    }
 
 
 @view_config(route_name='search', renderer='../templates/search.html')
