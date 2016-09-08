@@ -20,13 +20,19 @@ def test_home_view(dummy_request):
     assert info["page_title"] == 'Home'
 
 
+def test_about_view(dummy_request):
+    """Test home template is in home view."""
+    from .views.default import home_view
+    info = home_view(dummy_request)
+    assert info["page_title"] == 'Home'
+
+
 def test_login_view(dummy_request):
-    """Test template is in login view."""
-    from .views.default import login_view
-    info = login_view(dummy_request)
+    """Test about view."""
+    from .views.default import about_view
+    response = about_view(dummy_request)
     assert dummy_request.response.status_code == 200
-    assert info["page_title"] == 'Login'
-    assert info['error'] == ''
+    assert response["page_title"] == 'About'
 
 
 def test_login_view_authenticated(mock_request):
@@ -39,7 +45,7 @@ def test_login_view_authenticated(mock_request):
 
 
 def test_login_view_fail(mock_request):
-    """login_view should return erro when incorrect credentials arr provided."""
+    """login_view should fail when incorrect credentials are provided."""
     from .views.default import login_view
     mock_request.params['email'] = 'incorrectemail'
     mock_request.params['password'] = 'incorrectpw'
@@ -108,6 +114,23 @@ def test_register_view_post_email_exists(mock_request):
     ))
     response = register_view(mock_request)
     assert isinstance(response, HTTPFound)
+    assert response.location == '/login'
+
+
+def test_register_view_post_pw_not_matched(mock_request):
+    """Test register_view when it is posted an email already existed."""
+    from .views.default import register_view
+    mock_request.params['first-name'] = 'Test'
+    mock_request.params['last-name'] = 'User'
+    mock_request.params['email'] = 'test@user.com'
+    mock_request.params['password'] = 'testpassword'
+    mock_request.params['confirm-password'] = 'something'
+    mock_request.params['city'] = 'City'
+    mock_request.params['state'] = 'WA'
+    response = register_view(mock_request)
+    assert isinstance(response, HTTPFound)
+    assert response.location == '/login'
+
 
 
 def test_register_view_authenticated(mock_request):
@@ -148,6 +171,25 @@ def test_dashboard_view(dummy_request):
     response = dashboard_view(dummy_request)
     assert response['page_title'] == 'Dashboard'
     assert dummy_request.response.status_code == 200
+
+
+def test_profile_view_get(mock_request):
+    """Test get profile_view."""
+    from .views.default import profile_view
+    mock_request.dbsession.add(User(
+                email='test@user.com',
+                password=pwd_context.encrypt('testpassword'),
+                first_name='Test',
+                last_name='User',
+                city='City',
+                state='WA'
+    ))
+    mock_request.authenticated_userid = 'test@user.com'
+    mock_request.method = 'GET'
+    response = profile_view(mock_request)
+    assert response['page_title'] == 'My profile'
+    assert response['user'].email == 'test@user.com'
+
 
 
 def test_forbidden_view(mock_request):

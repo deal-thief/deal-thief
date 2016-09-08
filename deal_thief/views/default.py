@@ -121,6 +121,7 @@ def profile_view(request):
     email = authenticated_userid(request)
     query = request.dbsession.query(User).filter_by(email=email)
     user = query.first()
+    # import pdb; pdb.set_trace()
     if request.method == 'POST':
         current_password = request.params.get('current-password', '')
         if pwd_context.verify(current_password, user.password):

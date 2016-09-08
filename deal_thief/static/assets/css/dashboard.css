@@ -3,7 +3,7 @@ a {
 }
 
 .nav>li>a:focus, .nav>li>a:hover {
-  background-color: #FF530D;
+  background-color: #000;
   color: #fff;
 }
 
@@ -12,8 +12,8 @@ a {
 .nav-sidebar > .active > a:hover,
 .nav-sidebar > .active > a:focus {
   color: #fff;
-
-  background-color: #FF530D;
+  background-color: #000;
+  border-left: 5px solid #FF530D;
 }
 
 @media only screen and (min-width: 767px) {
