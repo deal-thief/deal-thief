@@ -175,3 +175,7 @@
 	width: 6em;
 	background: #FF530D;
 }
+
+#about-page .row {
+	margin-bottom: 3em;
+}
