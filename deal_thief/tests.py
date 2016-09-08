@@ -287,3 +287,9 @@ def test_create_parsed_hotel_info():
                         }],
               }
     assert len(create_parsed_hotel_info(hotels)) == 2
+
+
+
+# @
+# def test_get_location_id():
+#     """Test getting of location id."""
