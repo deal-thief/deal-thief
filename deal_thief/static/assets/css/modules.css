@@ -152,8 +152,26 @@
 	}
 }
 
+#about-page  {
+	margin-top: 5em;
+}
+
+#about-page ul {
+	list-style: none;
+}
+
 #about-page .blurb {
 	border: 1px solid;
 	background: linear-gradient(to right, #FF530D 50%, #31353E 50%);
 	color: #FFF;
+}
+
+#about-page .img-shift {
+	margin-top: 2em;
+}
+
+#about-page .mug {
+	height: 6em;
+	width: 6em;
+	background: #FF530D;
 }
