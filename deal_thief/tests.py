@@ -4,7 +4,13 @@ import transaction
 from pyramid import testing
 from pyramid.httpexceptions import HTTPFound
 from passlib.apps import custom_app_context as pwd_context
+from requests import Response
 from .models import User, Search
+try:
+    from unittest.mock import patch, MagicMock
+except ImportError:
+    from mock import patch, MagicMock
+import json
 
 
 def test_home_view(dummy_request):
@@ -12,13 +18,6 @@ def test_home_view(dummy_request):
     from .views.default import home_view
     info = home_view(dummy_request)
     assert info["page_title"] == 'Home'
-
-
-def test_about_view(dummy_request):
-    """Test about_view."""
-    from .views.default import about_view
-    response = about_view(dummy_request)
-    assert response["page_title"] == 'About'
 
 
 def test_login_view(dummy_request):
@@ -40,7 +39,7 @@ def test_login_view_authenticated(mock_request):
 
 
 def test_login_view_fail(mock_request):
-    """login_view fail when incorrect credentials are provided."""
+    """login_view should return erro when incorrect credentials arr provided."""
     from .views.default import login_view
     mock_request.params['email'] = 'incorrectemail'
     mock_request.params['password'] = 'incorrectpw'
@@ -90,27 +89,11 @@ def test_register_view_post(mock_request):
     mock_request.params['last-name'] = 'User'
     mock_request.params['email'] = 'test@user.com'
     mock_request.params['password'] = 'testpassword'
-    mock_request.params['confirm-password'] = 'testpassword'
     mock_request.params['city'] = 'City'
     mock_request.params['state'] = 'WA'
     response = register_view(mock_request)
     assert isinstance(response, HTTPFound)
     assert response.location == '/home'
-
-
-def test_register_view_post_pw_not_matched(mock_request):
-    """Test register_view when password does not match."""
-    from .views.default import register_view
-    mock_request.params['first-name'] = 'Test'
-    mock_request.params['last-name'] = 'User'
-    mock_request.params['email'] = 'test@user.com'
-    mock_request.params['password'] = 'testpassword'
-    mock_request.params['confirm-password'] = 'different'
-    mock_request.params['city'] = 'City'
-    mock_request.params['state'] = 'WA'
-    response = register_view(mock_request)
-    assert response['page_title'] == 'Register'
-    assert response['error'] == 'Password didn\'t match'
 
 
 def test_register_view_post_email_exists(mock_request):
@@ -120,7 +103,6 @@ def test_register_view_post_email_exists(mock_request):
     mock_request.params['last-name'] = 'User'
     mock_request.params['email'] = 'test@user.com'
     mock_request.params['password'] = 'testpassword'
-    mock_request.params['confirm-password'] = 'testpassword'
     mock_request.params['city'] = 'City'
     mock_request.params['state'] = 'WA'
     mock_request.dbsession.add(User(
@@ -173,14 +155,6 @@ def test_dashboard_view(dummy_request):
     response = dashboard_view(dummy_request)
     assert response['page_title'] == 'Dashboard'
     assert dummy_request.response.status_code == 200
-
-
-def test_profile_view(dummy_request):
-    """Test register_view."""
-    from .views.default import profile_view
-    response = profile_view(dummy_request)
-    assert dummy_request.response.status_code == 200
-    assert response['page_title'] == 'My profile'
 
 
 def test_forbidden_view(mock_request):
@@ -319,3 +293,47 @@ def test_create_parsed_hotel_info():
                         }],
               }
     assert len(create_parsed_hotel_info(hotels)) == 2
+
+NEW_JSON = {"places": [
+    {
+      "place_id": 1,
+      "city_name": "Seattle",
+      "admin_level1": "WA",
+      "country_name": "United States",
+      "admin_level2": "King"
+    },
+    {
+      "place_id": 2,
+      "city_name": "Seattle Heights",
+      "admin_level1": "WA",
+      "country_name": "United States",
+      "admin_level2": "Snohomish"
+    }],
+    "results": [
+    {
+      "display_name": "Seattle",
+      "parent_place_id": 1,
+      "individual_id": "27538444",
+      "geo_type": "City",
+      "localised_geo_type": "City",
+      "is_bookable": 'false'
+    },
+    {
+      "display_name": "Seattle / Tacoma International (SEA)",
+      "parent_place_id": 1,
+      "individual_id": "95673694",
+      "geo_type": "Airport",
+      "localised_geo_type": "Airport",
+      "is_bookable": 'false'
+    }]}
+
+
+@patch('requests.get')
+def test_get_location_id(req):
+    """Test getting of location id."""
+    from .views.default import get_location_id
+    mock_response = MagicMock(spec=Response, status_code=200, response=json.dumps(NEW_JSON))
+    req.return_value = mock_response
+    mock_response.json.return_value = NEW_JSON
+    result =  get_location_id('seattle')
+    assert result == "27538444"
