@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block css %}
-
+	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/assets/css/home.css') }}" />
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/masterslider.css') }}" />
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/skins/default/style.css') }}" />
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/datepicker/css/bootstrap-datepicker3.min.css') }}" />
@@ -54,9 +54,9 @@
 				<div class="col-sm-4 input-wrapper">
 					<label for="date">Date</label>
 					<div class="form-group input-daterange input-group col-sm-4" id="search-date">
-						<input type="text" class="form-control" name="start" placeholder="Check in" required/>
+						<input type="text" class="form-control" name="start" placeholder="Check in" readonly required/>
 						<span class="input-group-addon">to</span>
-						<input type="text" class="form-control" name="end" placeholder="Check out" required/>
+						<input type="text" class="form-control" name="end" placeholder="Check out" readonly required/>
 					</div>
 				</div>
 				<div class="col-sm-3 input-wrapper">
