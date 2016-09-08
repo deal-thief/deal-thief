@@ -14,6 +14,13 @@ def test_home_view(dummy_request):
     assert info["page_title"] == 'Home'
 
 
+def test_about_view(dummy_request):
+    """Test about_view."""
+    from .views.default import about_view
+    response = about_view(dummy_request)
+    assert response["page_title"] == 'About'
+
+
 def test_login_view(dummy_request):
     """Test template is in login view."""
     from .views.default import login_view
@@ -33,7 +40,7 @@ def test_login_view_authenticated(mock_request):
 
 
 def test_login_view_fail(mock_request):
-    """login_view should return erro when incorrect credentials arr provided."""
+    """login_view fail when incorrect credentials are provided."""
     from .views.default import login_view
     mock_request.params['email'] = 'incorrectemail'
     mock_request.params['password'] = 'incorrectpw'
@@ -83,11 +90,27 @@ def test_register_view_post(mock_request):
     mock_request.params['last-name'] = 'User'
     mock_request.params['email'] = 'test@user.com'
     mock_request.params['password'] = 'testpassword'
+    mock_request.params['confirm-password'] = 'testpassword'
     mock_request.params['city'] = 'City'
     mock_request.params['state'] = 'WA'
     response = register_view(mock_request)
     assert isinstance(response, HTTPFound)
     assert response.location == '/home'
+
+
+def test_register_view_post_pw_not_matched(mock_request):
+    """Test register_view when password does not match."""
+    from .views.default import register_view
+    mock_request.params['first-name'] = 'Test'
+    mock_request.params['last-name'] = 'User'
+    mock_request.params['email'] = 'test@user.com'
+    mock_request.params['password'] = 'testpassword'
+    mock_request.params['confirm-password'] = 'different'
+    mock_request.params['city'] = 'City'
+    mock_request.params['state'] = 'WA'
+    response = register_view(mock_request)
+    assert response['page_title'] == 'Register'
+    assert response['error'] == 'Password didn\'t match'
 
 
 def test_register_view_post_email_exists(mock_request):
@@ -97,6 +120,7 @@ def test_register_view_post_email_exists(mock_request):
     mock_request.params['last-name'] = 'User'
     mock_request.params['email'] = 'test@user.com'
     mock_request.params['password'] = 'testpassword'
+    mock_request.params['confirm-password'] = 'testpassword'
     mock_request.params['city'] = 'City'
     mock_request.params['state'] = 'WA'
     mock_request.dbsession.add(User(
@@ -149,6 +173,14 @@ def test_dashboard_view(dummy_request):
     response = dashboard_view(dummy_request)
     assert response['page_title'] == 'Dashboard'
     assert dummy_request.response.status_code == 200
+
+
+def test_profile_view(dummy_request):
+    """Test register_view."""
+    from .views.default import profile_view
+    response = profile_view(dummy_request)
+    assert dummy_request.response.status_code == 200
+    assert response['page_title'] == 'My profile'
 
 
 def test_forbidden_view(mock_request):

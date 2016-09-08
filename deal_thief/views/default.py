@@ -4,9 +4,14 @@ import requests
 from passlib.apps import custom_app_context as pwd_context
 from pyramid.security import remember, forget, authenticated_userid
 from ..models import User, Search
-from ..tools import (create_url_for_api_location_id, create_url_for_hotel_list,
-                    create_url_for_hotel_details, create_url_hotel_id_list,
-                    create_deep_link_url, create_parsed_hotel_info)
+from ..tools import (
+        create_url_for_api_location_id,
+        create_url_for_hotel_list,
+        create_url_for_hotel_details,
+        create_url_hotel_id_list,
+        create_deep_link_url,
+        create_parsed_hotel_info
+)
 
 
 @view_config(route_name='home', renderer='../templates/home.html')
@@ -27,9 +32,11 @@ def register_view(request):
         last_name = request.params.get('last-name', '')
         email = request.params.get('email', '')
         password = request.params.get('password', '')
+        confirm_password = request.params.get('confirm-password', '')
         city = request.params.get('city', '')
         state = request.params.get('state', '')
-        if first_name and last_name and email and password and city and state:
+        if first_name and last_name and email and password and city and state\
+                and password == confirm_password:
             if request.dbsession.query(User).\
                     filter_by(email=email).count() == 0:
                 new_user = User(
@@ -48,6 +55,8 @@ def register_view(request):
                 )
             else:
                 error = 'Email existed'
+        elif password != confirm_password:
+            error = 'Password didn\'t match'
         else:
             error = 'All fields are required'
     return {
@@ -92,7 +101,7 @@ def logout_view(request):
 
 @view_config(
         route_name='dashboard',
-        renderer='../templates/dashboard/saved_searches.html',
+        renderer='../templates/dashboard/dashboard.html',
         permission='private'
 )
 def dashboard_view(request):
@@ -112,6 +121,16 @@ def profile_view(request):
     return {
         'page_title': 'My profile'
     }
+
+
+@view_config(route_name='about', renderer='../templates/about.html')
+def about_view(request):
+    """View for about page."""
+    return {
+        'page_title': 'About',
+        'is_authenticated': authenticated_userid(request)
+    }
+
 
 
 @view_config(route_name='search', renderer='../templates/search.html')

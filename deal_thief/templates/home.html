@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
 {% block css %}
-
+	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/assets/css/home.css') }}" />
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/masterslider.css') }}" />
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/skins/default/style.css') }}" />
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/datepicker/css/bootstrap-datepicker3.min.css') }}" />
+	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/ladda/ladda-themeless.min.css') }}" />
+
 
 {% endblock %}
 
@@ -52,17 +54,19 @@
 				<div class="col-sm-4 input-wrapper">
 					<label for="date">Date</label>
 					<div class="form-group input-daterange input-group col-sm-4" id="search-date">
-						<input type="text" class="form-control" name="start" placeholder="Check in" required/>
+						<input type="text" class="form-control" name="start" placeholder="Check in" readonly required/>
 						<span class="input-group-addon">to</span>
-						<input type="text" class="form-control" name="end" placeholder="Check out" required/>
+						<input type="text" class="form-control" name="end" placeholder="Check out" readonly required/>
 					</div>
 				</div>
 				<div class="col-sm-3 input-wrapper">
-					<button type="submit" class="btn btn-primary">Search</button>
+					<button class="ladda-button btn btn-primary" data-style="expand-right"><span class="ladda-label">Search</span></button>
 				</div>
+				{% if not is_authenticated %}
 				<div class="col-sm-12 input-wrapper">
-					<a href="/search"><small class="text-center">Advanced search</small></a>
+					<a href="/login"><small class="text-center">Log in to save your searches</small></a>
 				</div>
+				{% endif %}
 			</form>
 		</div>
 	</section>
@@ -75,6 +79,12 @@
 
 	<script src="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/masterslider.min.js') }}"></script>
 	<script src="{{ request.static_url('deal_thief:static/vendor/plugins/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+	<script src="{{ request.static_url('deal_thief:static/vendor/plugins/ladda/spin.min.js') }}"></script>
+	<script src="{{ request.static_url('deal_thief:static/vendor/plugins/ladda/ladda.min.js') }}"></script>
+	<script src="{{ request.static_url('deal_thief:static/vendor/plugins/ladda/ladda.jquery.min.js') }}"></script>
+
+
+
 	<script>
 			var slider = new MasterSlider();
 			slider.setup('hotdeals-slider' , {
@@ -85,6 +95,18 @@
 				view: 'flow',
 				shuffle: true,
 			});
+
+			var l = $( '.ladda-button' ).ladda();
+      l.click(function(){
+
+          // Start loading
+          l.ladda('start');
+
+          // Do something in backend and then stop ladda
+          // setTimeout() is only for demo purpose
+          $('#search-form').submit();
+
+      });
 	</script>
 
 	<script>
