@@ -1,33 +1,60 @@
 .navbar-default {
-	background-color: transparent;
-	border-color: transparent;
-}
-
-.navbar-default .navbar-header {
-	color: #FFF;
-	padding-top: 0.5em;
+	background-color: #31353E;;
+	border-color: none;
 }
 
 .navbar-default .navbar-brand {
 	padding: 0;
+	padding-top: 0.3em;
+}
+
+.navbar-default .navbar-nav>li>a {
+	color: #FFF;
+	padding-top: 17px;
+	padding-bottom: 9px;
+}
+
+.navbar-default .navbar-right>li>a:hover {
+	color: #FFF;
 }
 
 .navbar-default .navbar-brand img {
 	max-width: 150px;
 }
 
-.navbar-default .navbar-nav>li>a {
-	color: #FFF;
+.navbar-default .navbar-right>li:hover {
+	border-bottom: 5px solid #FF530D;
 }
 
-#navbar {
-	padding-top: 0.5em
+.navbar-default .navbar-right .current {
+	border-bottom: 5px solid #FF530D;
+}
+
+.btn-primary {
+	background: transparent;
+	color: #31353E;
+	border-color: #31353E;
+}
+
+.btn-primary:hover {
+	background: #31353E;
+	border-color: #31353E;
+}
+
+.btn-success {
+	background: transparent;
+	color: #FF530D;
+	border-color: #FF530D;
+}
+
+.btn-success:hover {
+	background: #FF530D;
+	border-color: #FF530D;
 }
 
 #slider {
 	height: 60%;
 }
-
 
 #slider .ms-caption {
 	max-width: 65% !important;
@@ -42,55 +69,18 @@
 
 #search-section {
 	height: 40%;
-	background-color: #31353e;
 }
 
 #search-section h3 {
 	color: #FFF
 }
 
-.form-signin {
-  max-width: 330px;
-  padding: 15px;
-  margin: 0 auto;
+#login-page {
+	padding-top: 7em;
 }
 
-.form-signin .form-signin-heading,
-.form-signin .checkbox {
-  margin-bottom: 10px;
-}
-
-.form-signin .checkbox {
-  font-weight: normal;
-}
-
-.form-signin .form-control {
-  position: relative;
-  height: auto;
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
-  padding: 10px;
-  font-size: 16px;
-}
-
-.form-signin .form-control:focus {
-  z-index: 2;
-}
-
-.form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.form-signin input[type="password"] {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-
-.form-signin button {
-	margin-top: 1em;
+#login-page form button {
+	width: 100%;
 }
 
 .deal-block {
@@ -101,9 +91,9 @@
 	border: 1px solid;
 }
 
-.custom-nav {
+/*.custom-nav {
 	background: linear-gradient(to right, #FF530D 50%, #31353E 50%);
-}
+}*/
 
 @media only screen and (max-width: 767px) {
 	#slider .ms-caption {
