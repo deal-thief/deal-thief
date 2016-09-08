@@ -22,7 +22,7 @@ def home_view(request):
     }
 
 
-@view_config(route_name='register', renderer='../templates/register.html')
+@view_config(route_name='register')
 def register_view(request):
     if authenticated_userid(request):
         return HTTPFound(location=request.route_url('home'))
@@ -59,10 +59,9 @@ def register_view(request):
             error = 'Password didn\'t match'
         else:
             error = 'All fields are required'
-    return {
-        'page_title': 'Register',
-        'error': error
-    }
+    return HTTPFound(
+        location=request.route_url('login', error=error),
+    )
 
 
 @view_config(route_name='login', renderer='../templates/login.html')
@@ -118,8 +117,31 @@ def dashboard_view(request):
 )
 def profile_view(request):
     """Profile view for user."""
+    message = {}
+    email = authenticated_userid(request)
+    query = request.dbsession.query(User).filter_by(email=email)
+    user = query.first()
+    if request.method == 'POST':
+        current_password = request.params.get('current-password', '')
+        if pwd_context.verify(current_password, user.password):
+            new_password = request.params.get('new-password', '')
+            confirm_new_password = request.params.get('confirm-new-password', '')
+            if new_password and confirm_new_password and\
+                    new_password == confirm_new_password:
+                user.password = pwd_context.encrypt(new_password)
+                request.dbsession.add(user)
+                message['type'] = 'success'
+                message['detail'] = 'Password updated'
+            else:
+                message['type'] = 'error'
+                message['detail'] = 'New passwords did not match'
+        else:
+            message['type'] = 'error'
+            message['detail'] = 'Incorrect current password'
     return {
-        'page_title': 'My profile'
+        'page_title': 'My profile',
+        'message': message,
+        'user': user
     }
 
 
