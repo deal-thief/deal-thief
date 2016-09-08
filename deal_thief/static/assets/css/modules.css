@@ -1,16 +1,17 @@
 .navbar-default {
 	background-color: #31353E;;
-	border-color: #31353E;
+	border-color: none;
 }
 
 .navbar-default .navbar-brand {
 	padding: 0;
-	padding-top: 0.2em;
+	padding-top: 0.3em;
 }
 
 .navbar-default .navbar-nav>li>a {
 	color: #FFF;
-	padding-bottom: 10.5px;
+	padding-top: 17px;
+	padding-bottom: 9px;
 }
 
 .navbar-default .navbar-right>li>a:hover {
