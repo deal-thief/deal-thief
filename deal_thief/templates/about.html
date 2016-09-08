@@ -1,18 +1,57 @@
 {% extends "base.html" %}
 {% block body %}
-<main id="login" class="container portal-main">
-  <section class="row">
-    {% if error != '' %}
-      <div class="alert alert-danger">
-        <strong>Error!</strong> {{ error }}
-      </div>
-    {% endif %}
-    <form action="" method="post" class="form-signin">
-      <input type="email" name="email" id="email" class="form-control" placeholder="Email" required autofocus>
-      <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
-      <a href="/register" class="btn btn-lg btn-success btn-block">Register</a>
-    </form>
-  </section>
+<main id="about-page" class="container">
+  <div>
+    <ul>
+      <li class="row">
+        <div class="col-md-3">
+          <img src=""/>
+          Mike Harrison
+        </div>
+        <div class="col-md-9">
+          <p class="blurb">
+            <h1>Mike's Message</h1>
+            I'm a Python developer and proud of it.
+            I eat chinese food mostly because I like the box that it comes in.
+            I have a weakness for morning coffee at Street Bean and Test Driven Development.
+            You can typically find me kickin it at Code Fellows with my Hacker Bros.
+            I think I can grow a mustache.
+          </p>
+        <div>
+      </li>
+      <li class="row">
+        <div class="col-md-3">
+          <img src=""/>
+          Steven Than
+        </div>
+        <div class="col-md-9">
+          <p class="blurb">
+            <h1>Steven's Message</h1>
+            Hi everyone. I'm Steven and I'm awesome.
+            I was once ping pong city champion, but that was many years ago.
+            Now my focus is on writing clean Pythonic code, but I'm not afraid of my JavaScript roots.
+            You will often see me using a mouse even though I tell everyone it's a waste of time.
+            What's a mustache? 
+          </p>
+        </div>
+      </li>
+      <li class="row">
+        <div class="col-md-3">
+          <img src=""/>
+          Vic Benavente
+        </div>
+        <div class="col-md-9">
+          <p class="blurb">
+            <h1>Vic's Message</h1>
+            I'm 6 feet tall, single and handsome.  At least that's what I tell myself.
+            I am the current Code Fellows ping pong champion.
+            My focus is on surving 5 more weeks of Python.
+            I enjoy long walks off short piers and Mets games on brisk autumn nights in New York.
+            I miss my mustache.
+          </p>
+        </div>
+      </li>
+    </ul>
+  </div>
 </main>
 {% endblock %}
