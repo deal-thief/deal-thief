@@ -117,6 +117,7 @@ def profile_view(request):
 def get_location_id(location):
     """Get location id from API based on user input."""
     location_id_url = create_url_for_api_location_id(location)
+    import pdb; pdb.set_trace()
     location_id_unparsed = requests.get(location_id_url)
     location_id_unparsed.raise_for_status()
     location_id = location_id_unparsed.json()['results'][0]['individual_id']

@@ -2,11 +2,13 @@ import os
 BASE_URL = 'http://partners.api.skyscanner.net/apiservices/hotels/'
 SESSION_BASE_URL = 'http://partners.api.skyscanner.net'
 
+
 def create_url_for_api_location_id(location):
     """Create url to get location id."""
     SKYSCANNER_API_KEY = os.environ.get('SKYSCANNER_API_KEY')
     result = BASE_URL + 'autosuggest/v2/US/USD/en-US/' + location + '?apikey=' + SKYSCANNER_API_KEY
     return result
+
 
 def create_url_for_hotel_list(location, checkin, checkout):
     """Create url to get session hotel list."""
@@ -34,6 +36,7 @@ def create_url_hotel_id_list(hotel_list_id):
         new_hotel_list_id += str(hotel_list_id[idx]['id']) + ','
     return new_hotel_list_id[:-1]
 
+
 def create_deep_link_url(hotel_ids, session_location_header):
     """Create final url for deep link."""
     session_and_key = session_location_header.split('/')[-1]
@@ -44,14 +47,14 @@ def create_parsed_hotel_info(hotels):
     """Create usable hotel info."""
     price_info = hotels["hotels_prices"]
     name_info = hotels["hotels"]
-    image_info = hotels["agents"]
+    # image_info = hotels["agents"]
     hotel_data = []
     for idx in range(len(price_info)):
         hotel_data.append({"id": price_info[idx]["id"]})
         hotel_data[idx]["booking_deeplink"] = price_info[idx]["agent_prices"][0]["booking_deeplink"]
         hotel_data[idx]["nightly_price"] = price_info[idx]["agent_prices"][0]["price_per_room_night"]
         hotel_data[idx]["price_total"] = price_info[idx]["agent_prices"][0]["price_total"]
-        hotel_data[idx]["images"] = image_info[idx]["image_url"]
+        # hotel_data[idx]["images"] = image_info[idx]["image_url"]
         hotel_data[idx]["name"] = name_info[idx]["name"]
         hotel_data[idx]["description"] = name_info[idx]["description"]
         hotel_data[idx]["address"] = name_info[idx]["address"]
