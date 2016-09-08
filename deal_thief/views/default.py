@@ -101,7 +101,7 @@ def logout_view(request):
 
 @view_config(
         route_name='dashboard',
-        renderer='../templates/dashboard/saved_searches.html',
+        renderer='../templates/dashboard/dashboard.html',
         permission='private'
 )
 def dashboard_view(request):
