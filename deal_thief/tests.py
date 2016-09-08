@@ -13,6 +13,12 @@ def test_home_view(dummy_request):
     info = home_view(dummy_request)
     assert info["page_title"] == 'Home'
 
+def test_home_view(dummy_request):
+    """Test about_view."""
+    from .views.default import about_view
+    response = about_view(dummy_request)
+    assert response["page_title"] == 'About'
+
 
 def test_login_view(dummy_request):
     """Test template is in login view."""
