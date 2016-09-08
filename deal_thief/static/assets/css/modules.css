@@ -151,3 +151,9 @@
 		margin-top: 1.82em;
 	}
 }
+
+#about-page .blurb {
+	border: 1px solid;
+	background: linear-gradient(to right, #FF530D 50%, #31353E 50%);
+	color: #FFF;
+}
