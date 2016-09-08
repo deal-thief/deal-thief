@@ -117,7 +117,6 @@ def profile_view(request):
 def get_location_id(location):
     """Get location id from API based on user input."""
     location_id_url = create_url_for_api_location_id(location)
-    import pdb; pdb.set_trace()
     location_id_unparsed = requests.get(location_id_url)
     location_id_unparsed.raise_for_status()
     location_id = location_id_unparsed.json()['results'][0]['individual_id']
@@ -142,10 +141,20 @@ def get_hotel_id_list(session):
 
 def get_hotel_info(hotel_id_list, session):
     """Get hotel info and prices from API."""
-    final_url = create_deep_link_url(hotel_id_list, session)
-    hotel_info_unparsed = requests.get(final_url)
-    hotels = hotel_info_unparsed.json()
-    final_info = create_parsed_hotel_info(hotels)
+    max_retries = 5
+    retry_count = 0
+    final_info = []
+    while retry_count < max_retries:
+        try:
+            final_url = create_deep_link_url(hotel_id_list, session)
+            hotel_info_unparsed = requests.get(final_url)
+            hotels = hotel_info_unparsed.json()
+            final_info = create_parsed_hotel_info(hotels)
+        except ValueError:
+            retry_count += 1
+            continue
+        else:
+            break
     return final_info
 
 
@@ -155,6 +164,13 @@ def search_view(request):
     location = request.params['location']
     checkin = request.params['start']
     checkout = request.params['end']
+
+    # key = (location, checkin, checkout)
+    # if key not in request.session:
+    #     loc_id = get_location_id(location)
+    #     api_session = get_session(location_id, checkin, checkout)
+    #     request.session[key] = api_session
+    # session = request.session[key]
 
     location_id = get_location_id(location)
     session = get_session(location_id, checkin, checkout)
