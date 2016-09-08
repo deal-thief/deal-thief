@@ -5,6 +5,8 @@
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/masterslider.css') }}" />
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/skins/default/style.css') }}" />
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/datepicker/css/bootstrap-datepicker3.min.css') }}" />
+	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/ladda/ladda-themeless.min.css') }}" />
+
 
 {% endblock %}
 
@@ -58,7 +60,7 @@
 					</div>
 				</div>
 				<div class="col-sm-3 input-wrapper">
-					<button type="submit" class="btn btn-primary">Search</button>
+					<button class="ladda-button btn btn-primary" data-style="expand-right"><span class="ladda-label">Search</span></button>
 				</div>
 				<div class="col-sm-12 input-wrapper">
 					<a href="/search"><small class="text-center">Advanced search</small></a>
@@ -75,6 +77,12 @@
 
 	<script src="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/masterslider.min.js') }}"></script>
 	<script src="{{ request.static_url('deal_thief:static/vendor/plugins/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+	<script src="{{ request.static_url('deal_thief:static/vendor/plugins/ladda/spin.min.js') }}"></script>
+	<script src="{{ request.static_url('deal_thief:static/vendor/plugins/ladda/ladda.min.js') }}"></script>
+	<script src="{{ request.static_url('deal_thief:static/vendor/plugins/ladda/ladda.jquery.min.js') }}"></script>
+
+
+
 	<script>
 			var slider = new MasterSlider();
 			slider.setup('hotdeals-slider' , {
@@ -85,6 +93,18 @@
 				view: 'flow',
 				shuffle: true,
 			});
+
+			var l = $( '.ladda-button' ).ladda();
+      l.click(function(){
+
+          // Start loading
+          l.ladda('start');
+
+          // Do something in backend and then stop ladda
+          // setTimeout() is only for demo purpose
+          $('#search-form').submit();
+
+      });
 	</script>
 
 	<script>

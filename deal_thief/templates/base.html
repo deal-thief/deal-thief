@@ -1,13 +1,26 @@
-{% extends "layout.html" %}
-	{% block basecss %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Deal Thief | {{ page_title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Vendor css -->
+    <link rel="stylesheet" href="/static/vendor/css/normalize.css">
+    <link rel="stylesheet" href="/static/vendor/css/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.offcanvas.min.css">
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,300,700&amp;subset=cyrillic,latin">
+
     <!-- Custom css -->
+    <link rel="stylesheet" href="/static/assets/css/base.css">
+    <link rel="stylesheet" href="/static/assets/css/layout.css">
+    <link rel="stylesheet" href="/static/assets/css/modules.css">
 		<meta name='B-verify' content='17b28608c286faec0a06a5390ad8c4f15eb0b859'g>
 		{% block css %}{% endblock %}
-	{% endblock %}
-
-	{% block basebody %}
+  <body>
     <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container-fluid">
+      <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
@@ -35,7 +48,7 @@
               <!--</ul>-->
             <!--</li>-->
           <!--</ul>-->
-          <ul class="nav navbar-nav navbar-right custom-nav">
+          <ul class="nav navbar-nav navbar-right">
             <li><a href="/">Home</a></li>
             <li><a href="/about">About</a></li>
             <li><a href="/contact">Contact</a></li>
@@ -52,12 +65,10 @@
     {% block body %}{% endblock %}
 
     <!-- Vendor scripts -->
-		{% block basejs %}
-			<script async defer src="https://maps.googleapis.com/maps/api/js?key=GOOGLE_API_KEY&callback=initMap"
-	 type="text/javascript"></script>
-			<!-- Custom scripts -->
-			{% block js %}{% endblock %}
-		{% endblock %}
-	{% endblock %}
+		<script src="/static/vendor/js/jquery-2.2.4.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.offcanvas.min.js"></script>
+		<!-- Custom scripts -->
+		{% block js %}{% endblock %}
+	</body>
 </html>
-
