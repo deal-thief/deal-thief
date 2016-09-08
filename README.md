@@ -6,3 +6,7 @@ https://dealthief.herokuapp.com
 
 ## Developers  
 Mike Harrison, Steven Than, Victor Benavente
+
+
+Woked with Cris and looked at Twitter Tunes for help with Mock Testing
+github.com/icarrera/twitter-tunes/

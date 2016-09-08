@@ -27,6 +27,7 @@ tests_require = [
     'pytest',  # includes virtualenv
     'pytest-cov',
     'tox',
+    'mock',
     ]
 
 setup(name='deal-thief',
