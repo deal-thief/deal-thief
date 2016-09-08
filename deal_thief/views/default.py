@@ -22,45 +22,45 @@ def home_view(request):
     }
 
 
-@view_config(route_name='register')
+@view_config(route_name='register', request_method='POST')
 def register_view(request):
     if authenticated_userid(request):
         return HTTPFound(location=request.route_url('home'))
     error = ''
-    if request.method == 'POST':
-        first_name = request.params.get('first-name', '')
-        last_name = request.params.get('last-name', '')
-        email = request.params.get('email', '')
-        password = request.params.get('password', '')
-        confirm_password = request.params.get('confirm-password', '')
-        city = request.params.get('city', '')
-        state = request.params.get('state', '')
-        if first_name and last_name and email and password and city and state\
-                and password == confirm_password:
-            if request.dbsession.query(User).\
-                    filter_by(email=email).count() == 0:
-                new_user = User(
-                    first_name=first_name,
-                    last_name=last_name,
-                    email=email,
-                    password=pwd_context.encrypt(password),
-                    city=city,
-                    state=state
-                )
-                request.dbsession.add(new_user)
-                headers = remember(request, email)
-                return HTTPFound(
-                        location=request.route_url('home'),
-                        headers=headers
-                )
-            else:
-                error = 'Email existed'
-        elif password != confirm_password:
-            error = 'Password didn\'t match'
+    first_name = request.params.get('first-name', '')
+    last_name = request.params.get('last-name', '')
+    email = request.params.get('email', '')
+    password = request.params.get('password', '')
+    confirm_password = request.params.get('confirm-password', '')
+    city = request.params.get('city', '')
+    state = request.params.get('state', '')
+    if first_name and last_name and email and password and city and state\
+            and password == confirm_password:
+        if request.dbsession.query(User).\
+                filter_by(email=email).count() == 0:
+            new_user = User(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=pwd_context.encrypt(password),
+                city=city,
+                state=state
+            )
+            request.dbsession.add(new_user)
+            headers = remember(request, email)
+            return HTTPFound(
+                    location=request.route_url('home'),
+                    headers=headers
+            )
         else:
-            error = 'All fields are required'
+            error = 'Email existed'
+    elif password != confirm_password:
+        error = 'Password didn\'t match'
+    else:
+        error = 'All fields are required'
+    request.session.flash(error)
     return HTTPFound(
-        location=request.route_url('login', error=error),
+        location=request.route_url('login'),
     )
 
 

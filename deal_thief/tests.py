@@ -65,21 +65,12 @@ def test_login_view_post_success(mock_request):
     assert response.location == '/home'
 
 
-def test_register_view(dummy_request):
-    """Test register_view."""
-    from .views.default import register_view
-    info = register_view(dummy_request)
-    assert dummy_request.response.status_code == 200
-    assert info['page_title'] == 'Register'
-    assert info['error'] == ''
-
-
 def test_register_view_post_empty_field(mock_request):
     """Test register_view posted with empty form."""
     from .views.default import register_view
     response = register_view(mock_request)
-    assert response['page_title'] == 'Register'
-    assert response['error'] == 'All fields are required'
+    assert isinstance(response, HTTPFound)
+    assert response.location == '/login'
 
 
 def test_register_view_post(mock_request):
@@ -89,6 +80,7 @@ def test_register_view_post(mock_request):
     mock_request.params['last-name'] = 'User'
     mock_request.params['email'] = 'test@user.com'
     mock_request.params['password'] = 'testpassword'
+    mock_request.params['confirm-password'] = 'testpassword'
     mock_request.params['city'] = 'City'
     mock_request.params['state'] = 'WA'
     response = register_view(mock_request)
@@ -103,6 +95,7 @@ def test_register_view_post_email_exists(mock_request):
     mock_request.params['last-name'] = 'User'
     mock_request.params['email'] = 'test@user.com'
     mock_request.params['password'] = 'testpassword'
+    mock_request.params['confirm-password'] = 'testpassword'
     mock_request.params['city'] = 'City'
     mock_request.params['state'] = 'WA'
     mock_request.dbsession.add(User(
@@ -114,7 +107,7 @@ def test_register_view_post_email_exists(mock_request):
                 state='WA'
     ))
     response = register_view(mock_request)
-    assert response['error'] == 'Email existed'
+    assert isinstance(response, HTTPFound)
 
 
 def test_register_view_authenticated(mock_request):
@@ -189,10 +182,9 @@ def test_layout_root_login(testapp):
 
 
 def test_layout_root_register_get(testapp):
-    """Test layout root of home route."""
-    response = testapp.get('/register')
-    assert response.status_code == 200
-    assert response.html.find('title').get_text() == "Deal Thief | Register"
+    """Regiter view get should return 404 because it only allow post."""
+    response = testapp.get('/register', status='4*')
+    assert response.status_code == 404
 
 
 def test_layout_root_dashboard_not_logged_in(testapp):

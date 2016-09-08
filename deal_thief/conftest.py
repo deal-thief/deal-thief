@@ -25,6 +25,17 @@ class MockRequest(object):
         return '/{}'.format(string)
 
 
+class MockSession(object):
+    def __init__(self, **kwargs):
+        """Init a MockSession instance."""
+        self.flash_msg = []
+        self.__dict__.update(kwargs)
+
+    def flash(self, string):
+        """Mimic the pyramid.session.flash object."""
+        self.flash_msg.append(string)
+
+
 @pytest.fixture(scope='session')
 def sqlengine(request):
     config = testing.setUp(settings={
@@ -71,7 +82,8 @@ def mock_request(new_session):
             method='POST',
             authenticated_userid=None,
             dbsession=new_session,
-            params={}
+            params={},
+            session=MockSession()
     )
 
 
@@ -79,7 +91,8 @@ def mock_request(new_session):
 def testapp():
     """Setup TestApp."""
     from deal_thief import main
-    app = main({})
+    settings = {'sqlalchemy.url': 'sqlite:///:memory:'}
+    app = main({}, **settings)
     from webtest import TestApp
     return TestApp(app)
 
