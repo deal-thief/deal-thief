@@ -159,7 +159,7 @@ def get_hotel_id_list(session):
 
 def get_hotel_info(hotel_id_list, session):
     """Get hotel info and prices from API."""
-    max_retries = 5
+    max_retries = 3
     retry_count = 0
     final_info = []
     while retry_count < max_retries:

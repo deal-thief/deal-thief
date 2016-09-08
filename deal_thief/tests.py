@@ -344,6 +344,60 @@ HOTEL_LIST = {'hotels_prices': [
     {'agent_prices': [{'id': 106, 'price_total': 247}], 'id': 46971209}]
 }
 
+HOTELS = {"hotels_prices": [
+    {"id": 1, "agent_prices": [{"price_per_room_night": 100,
+                                "price_total": 400,
+                                "booking_deeplink": "this is the deeplink"}]},
+    {"id": 2, "agent_prices": [{"price_per_room_night": 150,
+                                "price_total": 5000,
+                                "booking_deeplink": "this is the deeplink2"}]}
+                            ],
+            "hotels": [
+            {
+              "name": "Chicago Gateway Hostel",
+              "description": "Just a hostel",
+              "address": "hostile road",
+              "latitude": 41.9268,
+              "longitude": -87.64458,
+              "star_rating": 0
+            },
+                    {
+              "name": "Chicago Gateway Hostel",
+              "description": "Just a hostel",
+              "address": "hostile road",
+              "latitude": 41.9268,
+              "longitude": -87.64458,
+              "star_rating": 0
+                    }],
+              }
+
+FINAL_INFO = [
+    {
+        'latitude': 41.9268,
+        'address': 'hostile road',
+        'star_rating': 0,
+        'booking_deeplink':
+        'this is the deeplink',
+        'nightly_price': 100,
+        'description': 'Just a hostel',
+        'price_total': 400,
+        'name': 'Chicago Gateway Hostel',
+        'longitude': -87.64458,
+        'id': 1
+    },
+    {
+        'latitude': 41.9268,
+        'address': 'hostile road',
+        'star_rating': 0,
+        'booking_deeplink': 'this is the deeplink2',
+        'nightly_price': 150,
+        'description': 'Just a hostel',
+        'price_total': 5000,
+        'name': 'Chicago Gateway Hostel',
+        'longitude': -87.64458,
+        'id': 2
+    }]
+
 
 @patch('requests.get')
 def test_get_location_id(req):
@@ -375,3 +429,14 @@ def test_get_hotel_id_list(req):
     mock_response.json.return_value = HOTEL_LIST
     result = get_hotel_id_list('session')
     assert result == '136452598,46946922,46971209'
+
+
+@patch('requests.get')
+def test_get_hotel_info(req):
+    """Test get hotel info and prices from API."""
+    from .views.default import get_hotel_info
+    mock_response = MagicMock(spec=Response, status_code=200, response=json.dumps(HOTELS))
+    req.return_value = mock_response
+    mock_response.json.return_value = HOTELS
+    result = get_hotel_info('hotel_id_list', 'session')
+    assert result == FINAL_INFO
