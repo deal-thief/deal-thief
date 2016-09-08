@@ -132,7 +132,6 @@ def test_register_view_post_pw_not_matched(mock_request):
     assert response.location == '/login'
 
 
-
 def test_register_view_authenticated(mock_request):
     """register_view should redirect to home when user is authenticated."""
     from .views.default import register_view
@@ -190,6 +189,71 @@ def test_profile_view_get(mock_request):
     assert response['page_title'] == 'My profile'
     assert response['user'].email == 'test@user.com'
 
+
+def test_profile_view_post_success(mock_request):
+    """Test post profile_view."""
+    from .views.default import profile_view
+    mock_request.dbsession.add(User(
+                email='test@user.com',
+                password=pwd_context.encrypt('testpassword'),
+                first_name='Test',
+                last_name='User',
+                city='City',
+                state='WA'
+    ))
+    mock_request.authenticated_userid = 'test@user.com'
+    mock_request.params['current-password'] = 'testpassword'
+    mock_request.params['new-password'] = 'newpw'
+    mock_request.params['confirm-new-password'] = 'newpw'
+    response = profile_view(mock_request)
+    assert response['page_title'] == 'My profile'
+    assert response['user'].email == 'test@user.com'
+    assert response['message']['type'] == 'success'
+    assert response['message']['detail'] == 'Password updated'
+
+
+def test_profile_view_post_unmatched_new_pw(mock_request):
+    """Test post profile_view."""
+    from .views.default import profile_view
+    mock_request.dbsession.add(User(
+                email='test@user.com',
+                password=pwd_context.encrypt('testpassword'),
+                first_name='Test',
+                last_name='User',
+                city='City',
+                state='WA'
+    ))
+    mock_request.authenticated_userid = 'test@user.com'
+    mock_request.params['current-password'] = 'testpassword'
+    mock_request.params['new-password'] = 'newpw'
+    mock_request.params['confirm-new-password'] = 'newpw123'
+    response = profile_view(mock_request)
+    assert response['page_title'] == 'My profile'
+    assert response['user'].email == 'test@user.com'
+    assert response['message']['type'] == 'error'
+    assert response['message']['detail'] == 'New passwords did not match'
+
+
+def test_profile_view_post_wrong_current_pw(mock_request):
+    """Test post profile_view."""
+    from .views.default import profile_view
+    mock_request.dbsession.add(User(
+                email='test@user.com',
+                password=pwd_context.encrypt('testpassword'),
+                first_name='Test',
+                last_name='User',
+                city='City',
+                state='WA'
+    ))
+    mock_request.authenticated_userid = 'test@user.com'
+    mock_request.params['current-password'] = 'wrongpassword'
+    mock_request.params['new-password'] = 'newpw'
+    mock_request.params['confirm-new-password'] = 'newpw'
+    response = profile_view(mock_request)
+    assert response['page_title'] == 'My profile'
+    assert response['user'].email == 'test@user.com'
+    assert response['message']['type'] == 'error'
+    assert response['message']['detail'] == 'Incorrect current password'
 
 
 def test_forbidden_view(mock_request):
