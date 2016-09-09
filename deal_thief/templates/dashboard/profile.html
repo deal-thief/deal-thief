@@ -6,18 +6,20 @@
 
 {% block body %}
 
-<main id="dashboard" class="container-fluid">
+<main id="profile" class="container-fluid">
   <section class="row">
     <div class="col-sm-6">
       <h3>Your profile information</h3>
-      <p>First name: {{ user.first_name }}</p>
-      <p>Last name: {{ user.last_name }}</p>
-      <p>Email: {{ user.email }}</p>
-      <p>City: {{ user.city }}</p>
-      <p>State: {{ user.state }}</p>
+      <hr>
+      <p><strong>First name: </strong>{{ user.first_name }}</p>
+      <p><strong>Last name: </strong>{{ user.last_name }}</p>
+      <p><strong>Email: </strong>{{ user.email }}</p>
+      <p><strong>City: </strong>{{ user.city }}</p>
+      <p><strong>State: </strong>{{ user.state }}</p>
     </div>
     <div class="col-sm-6">
       <h3>Update your password</h3>
+      <hr>
       {% if message %}
         <div class="alert {% if message.type == 'error' %}alert-danger{% endif %}">
           <strong>{{ message.type }}!</strong> {{ message.detail }}

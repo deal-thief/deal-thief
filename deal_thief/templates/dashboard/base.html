@@ -32,6 +32,14 @@
 	          </button>
 						<a class="navbar-brand" href="/"><img id="nav-logo" src="{{ request.static_url('deal_thief:static/assets/img/dealthief-logo.png') }}"></a>
 	        </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+              <li {% if page_title == 'Dashboard' %} class="active" {% endif %}><a href="/dashboard">Dashboard</a></li>
+              <li {% if page_title == 'My profile' %} class="active" {% endif %}><a href="/profile">My profile</a></li>
+              <li><a href="/">Front page</a></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </div>
 	      </div>
 	    </nav>
 
@@ -41,6 +49,7 @@
 	          <ul class="nav nav-sidebar">
 							<li {% if page_title == 'Dashboard' %} class="active" {% endif %}><a href="/dashboard">Dashboard</a></li>
 	            <li {% if page_title == 'My profile' %} class="active" {% endif %}><a href="/profile">My profile</a></li>
+              <li><a href="/">Front page</a></li>
 							<li><a href="/logout">Log out</a></li>
 	          </ul>
 	        </div>

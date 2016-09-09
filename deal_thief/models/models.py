@@ -10,6 +10,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 from .meta import Base
 from passlib.apps import custom_app_context as pwd_context
+from datetime import datetime
 
 
 class User(Base):
@@ -45,8 +46,11 @@ class Search(Base):
 
     __tablename__ = 'searches'
     id = Column(Integer, primary_key=True)
-    date = Column(Date())
-    description = Column(UnicodeText())
+    creation_date = Column(Date, default=datetime.now)
+    location = Column(UnicodeText())
+    checkin = Column(Date())
+    checkout = Column(Date())
     user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship('User', back_populates='searches')
 
 Index('index_user_email', User.email, unique=True, mysql_length=255)

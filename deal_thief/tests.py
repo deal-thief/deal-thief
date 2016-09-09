@@ -164,12 +164,20 @@ def test_logout_view(mock_request):
     assert isinstance(response, HTTPFound)
 
 
-def test_dashboard_view(dummy_request):
+def test_dashboard_view(mock_request):
     """Test dashboard_view."""
     from .views.default import dashboard_view
-    response = dashboard_view(dummy_request)
+    mock_request.dbsession.add(User(
+                email='test@user.com',
+                password=pwd_context.encrypt('testpassword'),
+                first_name='Test',
+                last_name='User',
+                city='City',
+                state='WA'
+    ))
+    mock_request.authenticated_userid = 'test@user.com'
+    response = dashboard_view(mock_request)
     assert response['page_title'] == 'Dashboard'
-    assert dummy_request.response.status_code == 200
 
 
 def test_profile_view_get(mock_request):
@@ -303,7 +311,7 @@ def test_layout_root_404(testapp):
     """Test layout root of 404 route."""
     response = testapp.get('/notfound', status='4*')
     assert response.status_code == 404
-    assert response.html.find('p').get_text() == "404 Page Not Found"
+    assert response.html.find('h4').get_text() == "404 Page Not Found"
 
 
 # ------- Mike's Functional Tests -------
@@ -559,5 +567,4 @@ def test_search_view(location_id, session, hotel_id_list, hotel_info):
     hotel_id_list.return_value = '136452598,46946922,46971209'
     hotel_info.return_value = FINAL_INFO
     response = search_view(mock_request)
-    assert response == {'hotel_info': FINAL_INFO,
-                        'error': ERROR}
+    assert response['hotel_info'] == FINAL_INFO

@@ -3,13 +3,14 @@
 {% block css %}
 
   <link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/datepicker/css/bootstrap-datepicker3.min.css') }}" />
+  <link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/ladda/ladda-themeless.min.css') }}" />
 
 {% endblock %}
 
 {% block body %}
 
 <main id="search-page" class="container">
-  <div class="row">
+  <div class="row form-section">
     <div id="search-form-container" class="col-sm-12">
       <form id="search-form" class="form-inline" method="GET">
         <div class="col-sm-5 col-sm-offset-1 input-wrapper">
@@ -21,13 +22,13 @@
         <div class="col-sm-4 input-wrapper">
           <label for="date">Date</label>
           <div class="form-group input-daterange input-group col-sm-4" id="search-date">
-            <input type="text" class="form-control" name="start" placeholder="Check in" required/>
+            <input type="text" class="form-control" name="start" placeholder="Check in" readonly required/>
             <span class="input-group-addon">to</span>
-            <input type="text" class="form-control" name="end" placeholder="Check out" required/>
+            <input type="text" class="form-control" name="end" placeholder="Check out" readonly required/>
           </div>
         </div>
         <div class="col-sm-1 input-wrapper">
-            <button type="submit" class="btn btn-primary">Search</button>
+          <a class="ladda-button btn btn-default" data-style="expand-right"><span class="ladda-label">Search</span></a>
         </div>
       </form>
     </div>
@@ -37,21 +38,20 @@
 
       {% for hotel in hotel_info %}
 
-      <div class="row">
-        <!-- <div class="pic col-md-3">
-          <a href="{{ hotel.images }}"><img src="{{ hotel.images }}"></a>
-        </div> -->
-        <section class="deal-block col-sm-11">
-          <h1 class="">{{ hotel.name }}</h1>
-          <h3 class="">{{ hotel.star_rating }}</h3>
-          <div>{{ hotel.address }}</div>
-          <div>{{ hotel.description }}</div>
+      <div class="row deal-block">
+        <section class="col-sm-8 col-sm-offset-1 hotel-detail">
+          <h3>{{ hotel.name }}</h2>
+          <h5><strong>Star rating:</strong> {{ hotel.star_rating }}</h5>
+          <h5><strong>Address: </strong>{{ hotel.address }}</h5>
+          <a href="http://maps.google.com/?q={{ hotel.address }}">View on map</a>
+          <p>{{ hotel.description }}</p>
         </section>
-        <div class="deeplink col-sm-1">
-          <h1>${{ hotel.nightly_price }}</h1>
-          <a class="btn btn-primary" href="{{ hotel.booking_deeplink }}" rel="nofollow">Book Deal</a>
+        <div class="deeplink col-sm-2">
+          <h2 class="text-center">${{ hotel.nightly_price }}</h2>
+          <a class="btn btn-success" href="{{ hotel.booking_deeplink }}" rel="nofollow">Book Deal</a>
         </div>
       </div>
+      <hr>
       {% endfor %}
     {% endif %}
     {% if error != '' %}
@@ -65,13 +65,22 @@
 
 {% block js %}
 
-<script src="{{ request.static_url('deal_thief:static/vendor/plugins/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+  <script src="{{ request.static_url('deal_thief:static/vendor/plugins/datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+  <script src="{{ request.static_url('deal_thief:static/vendor/plugins/ladda/spin.min.js') }}"></script>
+  <script src="{{ request.static_url('deal_thief:static/vendor/plugins/ladda/ladda.min.js') }}"></script>
+  <script src="{{ request.static_url('deal_thief:static/vendor/plugins/ladda/ladda.jquery.min.js') }}"></script>
 
-<script>
-$('#search-date').datepicker({
-  autoclose: true,
-  startDate: '+1d',
-  todayHighlight: true
-});
-</script>
+  <script>
+    $('#search-date').datepicker({
+      autoclose: true,
+      startDate: '+1d',
+      todayHighlight: true,
+      orientation: "bottom auto"
+    });
+    var l = $( '.ladda-button' ).ladda();
+    l.click(function(){
+        l.ladda('start');
+        $('#search-form').submit();
+    });
+  </script>
 {% endblock %}

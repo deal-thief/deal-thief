@@ -2,7 +2,7 @@ from pyramid.view import notfound_view_config, forbidden_view_config
 from pyramid.httpexceptions import HTTPFound
 
 
-@notfound_view_config(renderer='../templates/404.jinja2')
+@notfound_view_config(renderer='../templates/404.html')
 def notfound_view(request):
     """Render custom not found view."""
     request.response.status = 404

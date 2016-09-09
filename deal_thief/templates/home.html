@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block css %}
+
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/assets/css/home.css') }}" />
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/masterslider.css') }}" />
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/skins/default/style.css') }}" />
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/datepicker/css/bootstrap-datepicker3.min.css') }}" />
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/ladda/ladda-themeless.min.css') }}" />
-
 
 {% endblock %}
 
@@ -20,22 +20,25 @@
 				<img src="static/vendor/plugins/masterslider/style/blank.gif" data-src="static/assets/img/seattle.jpg" alt=""/>
 				<div class="ms-layer ms-caption">
 					<h1>SEATTLE, USA</h1>
-					<p>Starting at $150 per night</p>
-					<a href="/search" class="btn btn-primary">Book now</a>
+					<p>Starting at $117 per night</p>
+					<a href="/search" class="btn btn-info">Book now</a>
 				</div>
-						<!--<a href="/">Home</a>-->
 			</div>
 			<div class="ms-slide">
 				<img src="static/vendor/plugins/masterslider/style/blank.gif" data-src="static/assets/img/london.jpg" alt=""/>
-				<div class="ms-layer ms-caption" style="top:10em; left:30px;">
+				<div class="ms-layer ms-caption">
+					<h1>LONDON, UK</h1>
+					<p>Starting at $117 per night</p>
+					<a href="/search" class="btn btn-info">Book now</a>
 				</div>
-						<!--<a href="/">Home</a>-->
 			</div>
 			<div class="ms-slide">
 				<img src="static/vendor/plugins/masterslider/style/blank.gif" data-src="static/assets/img/singapore.jpg" alt=""/>
-				<div class="ms-layer ms-caption" style="top:10em; left:30px;">
+				<div class="ms-layer ms-caption">
+					<h1>SINGAPORE CITY, SINGAPORE</h1>
+					<p>Starting at $101 per night</p>
+					<a href="/search" class="btn btn-info">Book now</a>
 				</div>
-						<!--<a href="/">Home</a>-->
 			</div>
 		</div>
   </section>
@@ -60,7 +63,7 @@
 					</div>
 				</div>
 				<div class="col-sm-3 input-wrapper">
-					<button class="ladda-button btn btn-primary" data-style="expand-right"><span class="ladda-label">Search</span></button>
+					<a class="ladda-button btn btn-default" data-style="expand-right"><span class="ladda-label">Search</span></a>
 				</div>
 				{% if not is_authenticated %}
 				<div class="col-sm-12 input-wrapper">
@@ -83,37 +86,27 @@
 	<script src="{{ request.static_url('deal_thief:static/vendor/plugins/ladda/ladda.min.js') }}"></script>
 	<script src="{{ request.static_url('deal_thief:static/vendor/plugins/ladda/ladda.jquery.min.js') }}"></script>
 
-
-
 	<script>
-			var slider = new MasterSlider();
-			slider.setup('hotdeals-slider' , {
-				layout: 'autofill',
-				layersMode: 'full',
-				autoplay: true,
-				mouse: false,
-				view: 'flow',
-				shuffle: true,
-			});
+		var slider = new MasterSlider();
+		slider.setup('hotdeals-slider' , {
+			layout: 'autofill',
+			layersMode: 'full',
+			autoplay: true,
+			mouse: false,
+			view: 'flow',
+			shuffle: true,
+		});
 
-			var l = $( '.ladda-button' ).ladda();
-      l.click(function(){
+		var l = $( '.ladda-button' ).ladda();
+    l.click(function(){
+        l.ladda('start');
+        $('#search-form').submit();
+    });
 
-          // Start loading
-          l.ladda('start');
-
-          // Do something in backend and then stop ladda
-          // setTimeout() is only for demo purpose
-          $('#search-form').submit();
-
-      });
-	</script>
-
-	<script>
-	$('#search-date').datepicker({
-		startDate: '+1d',
-		autoclose: true,
-		todayHighlight: true,
-	});
+		$('#search-date').datepicker({
+			startDate: '+1d',
+			autoclose: true,
+			todayHighlight: true,
+		});
 	</script>
 {% endblock %}
