@@ -55,6 +55,8 @@ def create_parsed_hotel_info(hotels):
         hotel_data[idx]["booking_deeplink"] = price_info[idx]["agent_prices"][0]["booking_deeplink"]
         hotel_data[idx]["nightly_price"] = price_info[idx]["agent_prices"][0]["price_per_room_night"]
         hotel_data[idx]["price_total"] = price_info[idx]["agent_prices"][0]["price_total"]
+        if not name_info:
+            raise ValueError("No Hotel Info")
         hotel_data[idx]["name"] = name_info[idx]["name"]
         hotel_data[idx]["description"] = name_info[idx]["description"]
         hotel_data[idx]["address"] = name_info[idx]["address"]
