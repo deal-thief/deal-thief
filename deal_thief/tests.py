@@ -540,8 +540,11 @@ def test_get_hotel_info(req):
     assert result == FINAL_INFO
 
 
-@patch('get_location_id')
-def test_search_view(location_id):
+@patch('deal_thief.views.default.get_hotel_info')
+@patch('deal_thief.views.default.get_hotel_id_list')
+@patch('deal_thief.views.default.get_session')
+@patch('deal_thief.views.default.get_location_id')
+def test_search_view(location_id, session, hotel_id_list, hotel_info):
     """Test search view returns correct final info."""
     from .views.default import search_view
     mock_request = testing.DummyRequest()
@@ -549,5 +552,8 @@ def test_search_view(location_id):
     mock_request.params['start'] = '10/14/2016'
     mock_request.params['end'] = '10/16/2016'
     location_id.return_value = '136452598'
+    session.return_value = 'api/services/etc'
+    hotel_id_list.return_value = '136452598,46946922,46971209'
+    hotel_info.return_value = FINAL_INFO
     response = search_view(mock_request)
-    assert response == {}
+    assert response == {'hotel_info': FINAL_INFO}
