@@ -346,9 +346,10 @@ def test_create_url_for_hotel_details():
 def test_create_url_hotel_id_list():
     """Test we create hotel id list."""
     from .tools import create_url_hotel_id_list
-    hotel_id_list = [{'agent_prices': [{'id': 1, 'price_total': 102}], 'id': 47173467},
-     {'agent_prices': [{'id': 124, 'price_total': 367}], 'id': 46948847},
-     {'agent_prices': [{'id': 47, 'price_total': 182}], 'id': 46941437}]
+    hotel_id_list = [
+        {'agent_prices': [{'id': 1, 'price_total': 102}], 'id': 47173467},
+        {'agent_prices': [{'id': 124, 'price_total': 367}], 'id': 46948847},
+        {'agent_prices': [{'id': 47, 'price_total': 182}], 'id': 46941437}]
     assert create_url_hotel_id_list(hotel_id_list) == '47173467,46948847,46941437'
 
 
@@ -496,6 +497,8 @@ FINAL_INFO = [
         'id': 2
     }]
 
+ERROR = ''
+
 
 @patch('requests.get')
 def test_get_location_id(req):
@@ -556,4 +559,5 @@ def test_search_view(location_id, session, hotel_id_list, hotel_info):
     hotel_id_list.return_value = '136452598,46946922,46971209'
     hotel_info.return_value = FINAL_INFO
     response = search_view(mock_request)
-    assert response == {'hotel_info': FINAL_INFO}
+    assert response == {'hotel_info': FINAL_INFO,
+                        'error': ERROR}
