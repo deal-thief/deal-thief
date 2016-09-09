@@ -21,12 +21,12 @@
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <a type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </button>
+          </a>
 					<a class="navbar-brand" href="/"><img id="nav-logo" src="{{ request.static_url('deal_thief:static/assets/img/dealthief-logo.png') }}"></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
@@ -34,7 +34,7 @@
             <li {% if page_title == 'Home' %}class="current"{% endif %}><a href="/">Home</a></li>
             <li {% if page_title == 'Search' %}class="current"{% endif %}><a href="/search">Search</a></li>
             <li {% if page_title == 'About' %}class="current"{% endif %}><a href="/about">About</a></li>
-            <li><a data-toggle="modal" data-target="#contact-form" href="#">Contact</a></li>
+            <li><a data-toggle="modal" data-target="#contact-form" style="cursor: pointer;">Contact</a></li>
 						{% if is_authenticated %}
             	<li><a href="/dashboard">Dashboard</a></li>
 						{% else %}
@@ -55,16 +55,19 @@
           <div class="modal-body">
             <form>
               <div class="form-group">
+                <input type="text" name="name" id="name" class="form-control" placeholder="Your name" required>
+              </div>
+              <div class="form-group">
                 <input type="email" name="email" id="email" class="form-control" placeholder="Your email" required>
               </div>
               <div class="form-group">
-                <textarea class="form-control" id="contact-form-message" rows=10 placeholder="Your message here..." required></textarea>
+                <textarea class="form-control" id="contact-form-message" rows=14 placeholder="Your message..." required></textarea>
               </div>
             </form>
           </div>
           <div class="modal-footer">
             <a type="button" class="btn btn-primary" data-dismiss="modal">Close</a>
-            <button type="submit" class="btn btn-success">Send</button>
+            <a type="submit" class="btn btn-success">Send</a>
           </div>
         </div>
       </div>
