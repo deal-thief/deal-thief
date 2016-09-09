@@ -106,8 +106,16 @@ def logout_view(request):
 )
 def dashboard_view(request):
     """Dashboard view for user."""
+    user_email = authenticated_userid(request)
+    user_query = request.dbsession.query(User).filter_by(email=user_email)
+    user = user_query.first()
+    search_query = request.dbsession.query(Search).filter_by(
+        user_id=user.id
+    )
+    searches = search_query.all()
     return {
-        'page_title': 'Dashboard'
+        'page_title': 'Dashboard',
+        'searches': searches
     }
 
 
@@ -126,7 +134,9 @@ def profile_view(request):
         current_password = request.params.get('current-password', '')
         if pwd_context.verify(current_password, user.password):
             new_password = request.params.get('new-password', '')
-            confirm_new_password = request.params.get('confirm-new-password', '')
+            confirm_new_password = request.params.get(
+                'confirm-new-password', ''
+            )
             if new_password and confirm_new_password and\
                     new_password == confirm_new_password:
                 user.password = pwd_context.encrypt(new_password)
@@ -211,7 +221,7 @@ def search_view(request):
     location = request.params.get('location', '')
     checkin = request.params.get('start', '')
     checkout = request.params.get('end', '')
-    user = authenticated_userid(request)
+    user_email = authenticated_userid(request)
     if location and checkin and checkout:
         try:
             location_id = get_location_id(location)
@@ -224,9 +234,19 @@ def search_view(request):
         except KeyError:
             error = 'There is no hotel information available'\
                 ' for this input.'
+        if user_email and not error:
+            query = request.dbsession.query(User).filter_by(email=user_email)
+            user = query.first()
+            new_search = Search(
+                location=location,
+                checkin=checkin,
+                checkout=checkout,
+                user_id=user.id
+            )
+            request.dbsession.add(new_search)
     return {
         'page_title': 'Search',
         'hotel_info': final_info,
-        'is_authenticated': user,
+        'is_authenticated': user_email,
         'error': error
     }
