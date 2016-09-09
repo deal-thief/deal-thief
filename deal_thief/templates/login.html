@@ -2,14 +2,14 @@
 {% block body %}
 <main id="login-page" class="container">
   <section class="row">
-    {% if error != '' %}
-      <div class="alert alert-danger">
-        <strong>Error!</strong> {{ error }}
-      </div>
-    {% endif %}
     <div class="col-sm-4 col-sm-offset-1">
       <form action="" method="post">
         <h3>Log in</h3>
+        {% if error != '' %}
+          <div class="alert alert-danger">
+            <strong>Error!</strong> {{ error }}
+          </div>
+        {% endif %}
         <div class="form-group">
           <input type="email" name="email" id="email" class="form-control" placeholder="Email" required autofocus>
         </div>
@@ -22,6 +22,11 @@
 
     <div class="col-sm-5 col-sm-offset-1">
       <h3>Register</h3>
+      {% for msg in request.session.pop_flash() %}
+      <div class="alert alert-danger">
+        <strong>Error!</strong> {{ msg }}
+      </div>
+      {% endfor %}
       <form action="/register" method="post">
         <div class="form-group">
           <input type="text" name="first-name" placeholder="First name" class="form-control" required>

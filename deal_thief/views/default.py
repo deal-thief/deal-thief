@@ -22,47 +22,46 @@ def home_view(request):
     }
 
 
-@view_config(route_name='register', renderer='../templates/register.html')
+@view_config(route_name='register', request_method='POST')
 def register_view(request):
     if authenticated_userid(request):
         return HTTPFound(location=request.route_url('home'))
     error = ''
-    if request.method == 'POST':
-        first_name = request.params.get('first-name', '')
-        last_name = request.params.get('last-name', '')
-        email = request.params.get('email', '')
-        password = request.params.get('password', '')
-        confirm_password = request.params.get('confirm-password', '')
-        city = request.params.get('city', '')
-        state = request.params.get('state', '')
-        if first_name and last_name and email and password and city and state\
-                and password == confirm_password:
-            if request.dbsession.query(User).\
-                    filter_by(email=email).count() == 0:
-                new_user = User(
-                    first_name=first_name,
-                    last_name=last_name,
-                    email=email,
-                    password=pwd_context.encrypt(password),
-                    city=city,
-                    state=state
-                )
-                request.dbsession.add(new_user)
-                headers = remember(request, email)
-                return HTTPFound(
-                        location=request.route_url('home'),
-                        headers=headers
-                )
-            else:
-                error = 'Email existed'
-        elif password != confirm_password:
-            error = 'Password didn\'t match'
+    first_name = request.params.get('first-name', '')
+    last_name = request.params.get('last-name', '')
+    email = request.params.get('email', '')
+    password = request.params.get('password', '')
+    confirm_password = request.params.get('confirm-password', '')
+    city = request.params.get('city', '')
+    state = request.params.get('state', '')
+    if first_name and last_name and email and password and city and state\
+            and password == confirm_password:
+        if request.dbsession.query(User).\
+                filter_by(email=email).count() == 0:
+            new_user = User(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=pwd_context.encrypt(password),
+                city=city,
+                state=state
+            )
+            request.dbsession.add(new_user)
+            headers = remember(request, email)
+            return HTTPFound(
+                    location=request.route_url('home'),
+                    headers=headers
+            )
         else:
-            error = 'All fields are required'
-    return {
-        'page_title': 'Register',
-        'error': error
-    }
+            error = 'Email existed'
+    elif password != confirm_password:
+        error = 'Password didn\'t match'
+    else:
+        error = 'All fields are required'
+    request.session.flash(error)
+    return HTTPFound(
+        location=request.route_url('login'),
+    )
 
 
 @view_config(route_name='login', renderer='../templates/login.html')
@@ -118,8 +117,32 @@ def dashboard_view(request):
 )
 def profile_view(request):
     """Profile view for user."""
+    message = {}
+    email = authenticated_userid(request)
+    query = request.dbsession.query(User).filter_by(email=email)
+    user = query.first()
+    # import pdb; pdb.set_trace()
+    if request.method == 'POST':
+        current_password = request.params.get('current-password', '')
+        if pwd_context.verify(current_password, user.password):
+            new_password = request.params.get('new-password', '')
+            confirm_new_password = request.params.get('confirm-new-password', '')
+            if new_password and confirm_new_password and\
+                    new_password == confirm_new_password:
+                user.password = pwd_context.encrypt(new_password)
+                request.dbsession.add(user)
+                message['type'] = 'success'
+                message['detail'] = 'Password updated'
+            else:
+                message['type'] = 'error'
+                message['detail'] = 'New passwords did not match'
+        else:
+            message['type'] = 'error'
+            message['detail'] = 'Incorrect current password'
     return {
-        'page_title': 'My profile'
+        'page_title': 'My profile',
+        'message': message,
+        'user': user
     }
 
 

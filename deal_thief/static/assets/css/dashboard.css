@@ -1,5 +1,24 @@
-@media (min-width: 768px) {
+a {
+  color: #fff;
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+  color: #fff;
+  background-color: #000;
+  border-left: 5px solid #FF530D;
+}
+
+@media only screen and (min-width: 767px) {
   .sidebar {
     background-color: #31353E;
   }
+
 }

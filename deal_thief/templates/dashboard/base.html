@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="/static/assets/css/layout.css">
     <link rel="stylesheet" href="/static/assets/css/modules.css">
     <link rel="stylesheet" href="/static/vendor/bootstrap/css/dashboard.css">
+    <link rel="stylesheet" href="{{ request.static_url('deal_thief:static/assets/css/dashboard.css') }}" />
+    {% block css %} {% endblock %}
 
 	<body>
 		<nav class="navbar navbar-default navbar-fixed-top">
@@ -51,5 +53,6 @@
 			<script src="/static/vendor/js/jquery-2.2.4.min.js"></script>
 			<script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
 			<script src="/static/vendor/bootstrap/js/bootstrap.offcanvas.min.js"></script>
+      {% block js %} {% endblock %}
 	</body>
 </html>
