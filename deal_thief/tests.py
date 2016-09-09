@@ -164,12 +164,20 @@ def test_logout_view(mock_request):
     assert isinstance(response, HTTPFound)
 
 
-def test_dashboard_view(dummy_request):
+def test_dashboard_view(mock_request):
     """Test dashboard_view."""
     from .views.default import dashboard_view
-    response = dashboard_view(dummy_request)
+    mock_request.dbsession.add(User(
+                email='test@user.com',
+                password=pwd_context.encrypt('testpassword'),
+                first_name='Test',
+                last_name='User',
+                city='City',
+                state='WA'
+    ))
+    mock_request.authenticated_userid = 'test@user.com'
+    response = dashboard_view(mock_request)
     assert response['page_title'] == 'Dashboard'
-    assert dummy_request.response.status_code == 200
 
 
 def test_profile_view_get(mock_request):

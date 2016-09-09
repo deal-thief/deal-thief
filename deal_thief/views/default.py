@@ -1,4 +1,4 @@
-"""Default view for Deal Thief """
+"""Default view for Deal Thief."""
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 import requests
