@@ -209,13 +209,12 @@ def search_view(request):
     checkout = request.params.get('end', '')
     if location and checkin and checkout:
 
-
-    # key = (location, checkin, checkout)
-    # if key not in request.session:
-    #     loc_id = get_location_id(location)
-    #     api_session = get_session(location_id, checkin, checkout)
-    #     request.session[key] = api_session
-    # session = request.session[key]
+        # key = (location, checkin, checkout)
+        # if key not in request.session:
+        #     loc_id = get_location_id(location)
+        #     api_session = get_session(location_id, checkin, checkout)
+        #     request.session[key] = api_session
+        # session = request.session[key]
 
         location_id = get_location_id(location)
         try:
