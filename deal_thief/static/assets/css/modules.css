@@ -52,6 +52,31 @@
 	border-color: #FF530D;
 }
 
+.btn-default {
+	background: #31353E;
+	color: #FFF;
+	border-color: #FF530D;
+}
+
+
+.btn-default:hover {
+	background-color: #0e0f12;
+	color: #FFF;
+}
+
+.btn-info {
+	background: #31353E;
+	color: #FFF;
+	border-color: #000;
+}
+
+
+.btn-info:hover {
+	background-color: #0e0f12;
+	color: #FFF;
+	border-color: #000;
+}
+
 #slider {
 	height: 60%;
 }
@@ -65,6 +90,10 @@
 	color: #FFF;
 	font-size: 14px !important;
 	/*text-shadow: 2px 4px 3px rgba(0,0,0,0.4);*/
+}
+
+#slider .ms-caption h1, p {
+	text-shadow: 2px 4px 3px rgba(0,0,0,0.4);
 }
 
 #search-section {
@@ -90,10 +119,6 @@
 .deeplink {
 	border: 1px solid;
 }
-
-/*.custom-nav {
-	background: linear-gradient(to right, #FF530D 50%, #31353E 50%);
-}*/
 
 @media only screen and (max-width: 767px) {
 	#slider .ms-caption {
@@ -153,7 +178,7 @@
 }
 
 #about-page  {
-	margin-top: 5em;
+	padding-top: 5em;
 }
 
 #about-page ul {
