@@ -1,3 +1,4 @@
+"""Default view for Deal Thief """
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 import requests
@@ -121,7 +122,6 @@ def profile_view(request):
     email = authenticated_userid(request)
     query = request.dbsession.query(User).filter_by(email=email)
     user = query.first()
-    # import pdb; pdb.set_trace()
     if request.method == 'POST':
         current_password = request.params.get('current-password', '')
         if pwd_context.verify(current_password, user.password):
@@ -166,8 +166,12 @@ def get_location_id(location):
 
 def get_session(location_id, checkin, checkout):
     """Get session info from API."""
-    session_start_url = create_url_for_hotel_list(location_id, checkin, checkout)
-    session = requests.get(session_start_url, headers={'Content-Type': 'application/json'})
+    session_start_url = create_url_for_hotel_list(
+        location_id, checkin, checkout
+    )
+    session = requests.get(
+        session_start_url, headers={'Content-Type': 'application/json'}
+    )
     return session.headers['Location']
 
 
@@ -208,14 +212,6 @@ def search_view(request):
     checkin = request.params.get('start', '')
     checkout = request.params.get('end', '')
     if location and checkin and checkout:
-
-        # key = (location, checkin, checkout)
-        # if key not in request.session:
-        #     loc_id = get_location_id(location)
-        #     api_session = get_session(location_id, checkin, checkout)
-        #     request.session[key] = api_session
-        # session = request.session[key]
-
         location_id = get_location_id(location)
         try:
             session = get_session(location_id, checkin, checkout)
@@ -223,22 +219,14 @@ def search_view(request):
             try:
                 final_info = get_hotel_info(hotel_id_list, session)
             except KeyError:
-                error = 'There is no hotel information available for this input.'
+                error = 'There is no hotel information available'\
+                    ' for this input.'
         except KeyError:
-            error = 'Make sure check out date is not the same as or prior to check in date.'
+            error = 'Make sure check out date is not the same as or'\
+                ' prior to check in date.'
     return {
-        "hotel_info": final_info,
-        "error": error
+        'page_title': 'Search',
+        'hotel_info': final_info,
+        'is_authenticated': authenticated_userid(request),
+        'error': error
     }
-
-
-'''
-request.session = {
-    (location, checkin, checkout) : {
-        'location_id': get_location_id(location),
-        'session': get_session(location, checkin, checkout),
-        'hotel_ids': get_hotel_ids(session),
-        'last_updates': datetime
-    }
-}
-'''
