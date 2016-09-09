@@ -202,22 +202,34 @@ def get_hotel_info(hotel_id_list, session):
 @view_config(route_name='search', renderer='../templates/search.html')
 def search_view(request):
     """Give us our search view."""
-    location = request.params['location']
-    checkin = request.params['start']
-    checkout = request.params['end']
+    error = ''
+    final_info = {}
+    location = request.params.get('location', '')
+    checkin = request.params.get('start', '')
+    checkout = request.params.get('end', '')
+    if location and checkin and checkout:
 
-    # key = (location, checkin, checkout)
-    # if key not in request.session:
-    #     loc_id = get_location_id(location)
-    #     api_session = get_session(location_id, checkin, checkout)
-    #     request.session[key] = api_session
-    # session = request.session[key]
+        # key = (location, checkin, checkout)
+        # if key not in request.session:
+        #     loc_id = get_location_id(location)
+        #     api_session = get_session(location_id, checkin, checkout)
+        #     request.session[key] = api_session
+        # session = request.session[key]
 
-    location_id = get_location_id(location)
-    session = get_session(location_id, checkin, checkout)
-    hotel_id_list = get_hotel_id_list(session)
-    final_info = get_hotel_info(hotel_id_list, session)
-    return {"hotel_info": final_info}
+        location_id = get_location_id(location)
+        try:
+            session = get_session(location_id, checkin, checkout)
+            hotel_id_list = get_hotel_id_list(session)
+            try:
+                final_info = get_hotel_info(hotel_id_list, session)
+            except KeyError:
+                error = 'There is no hotel information available for this input.'
+        except KeyError:
+            error = 'Make sure check out date is not the same as or prior to check in date.'
+    return {
+        "hotel_info": final_info,
+        "error": error
+    }
 
 
 '''
