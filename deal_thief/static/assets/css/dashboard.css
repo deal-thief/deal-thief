@@ -16,12 +16,20 @@ a {
   border-left: 5px solid #FF530D;
 }
 
+.navbar-fixed-top {
+  padding-bottom: 0.5px;
+}
+
 #profile .btn {
   width: 100%;
 }
 @media only screen and (min-width: 767px) {
   .sidebar {
     background-color: #31353E;
+  }
+
+  .navbar-right {
+    display: none;
   }
 
 }

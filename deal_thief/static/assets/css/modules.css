@@ -10,7 +10,6 @@
 
 .navbar-default .navbar-nav>li>a {
 	color: #FFF;
-	padding-top: 17px;
 	padding-bottom: 9px;
 }
 
@@ -152,7 +151,7 @@
 
 @media only screen and (max-width: 767px) {
 	.navbar-default .navbar-right>li:hover {
-		border-left: 5px solid #FF530D;
+		background-color: #000;
 	}
 
 	.navbar-default .navbar-right .current {
@@ -172,6 +171,9 @@
 }
 
 @media only screen and (min-width: 767px) {
+	.navbar-default .navbar-nav>li>a {
+		padding-top: 16px;
+	}
 	.navbar-default .navbar-right>li:hover {
 		border-bottom: 5px solid #FF530D;
 	}
