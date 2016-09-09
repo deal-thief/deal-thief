@@ -559,5 +559,4 @@ def test_search_view(location_id, session, hotel_id_list, hotel_info):
     hotel_id_list.return_value = '136452598,46946922,46971209'
     hotel_info.return_value = FINAL_INFO
     response = search_view(mock_request)
-    assert response == {'hotel_info': FINAL_INFO,
-                        'error': ERROR}
+    assert response['hotel_info'] == FINAL_INFO

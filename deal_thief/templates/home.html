@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block css %}
+
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/assets/css/home.css') }}" />
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/masterslider.css') }}" />
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/masterslider/skins/default/style.css') }}" />
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/datepicker/css/bootstrap-datepicker3.min.css') }}" />
 	<link rel="stylesheet" href="{{ request.static_url('deal_thief:static/vendor/plugins/ladda/ladda-themeless.min.css') }}" />
-
 
 {% endblock %}
 
@@ -86,37 +86,27 @@
 	<script src="{{ request.static_url('deal_thief:static/vendor/plugins/ladda/ladda.min.js') }}"></script>
 	<script src="{{ request.static_url('deal_thief:static/vendor/plugins/ladda/ladda.jquery.min.js') }}"></script>
 
-
-
 	<script>
-			var slider = new MasterSlider();
-			slider.setup('hotdeals-slider' , {
-				layout: 'autofill',
-				layersMode: 'full',
-				autoplay: true,
-				mouse: false,
-				view: 'flow',
-				shuffle: true,
-			});
+		var slider = new MasterSlider();
+		slider.setup('hotdeals-slider' , {
+			layout: 'autofill',
+			layersMode: 'full',
+			autoplay: true,
+			mouse: false,
+			view: 'flow',
+			shuffle: true,
+		});
 
-			var l = $( '.ladda-button' ).ladda();
-      l.click(function(){
+		var l = $( '.ladda-button' ).ladda();
+    l.click(function(){
+        l.ladda('start');
+        $('#search-form').submit();
+    });
 
-          // Start loading
-          l.ladda('start');
-
-          // Do something in backend and then stop ladda
-          // setTimeout() is only for demo purpose
-          $('#search-form').submit();
-
-      });
-	</script>
-
-	<script>
-	$('#search-date').datepicker({
-		startDate: '+1d',
-		autoclose: true,
-		todayHighlight: true,
-	});
+		$('#search-date').datepicker({
+			startDate: '+1d',
+			autoclose: true,
+			todayHighlight: true,
+		});
 	</script>
 {% endblock %}
