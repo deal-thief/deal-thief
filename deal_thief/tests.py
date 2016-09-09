@@ -311,7 +311,7 @@ def test_layout_root_404(testapp):
     """Test layout root of 404 route."""
     response = testapp.get('/notfound', status='4*')
     assert response.status_code == 404
-    assert response.html.find('p').get_text() == "404 Page Not Found"
+    assert response.html.find('h4').get_text() == "404 Page Not Found"
 
 
 # ------- Mike's Functional Tests -------

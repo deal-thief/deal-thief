@@ -16,6 +16,9 @@ a {
   border-left: 5px solid #FF530D;
 }
 
+#profile .btn {
+  width: 100%;
+}
 @media only screen and (min-width: 767px) {
   .sidebar {
     background-color: #31353E;
