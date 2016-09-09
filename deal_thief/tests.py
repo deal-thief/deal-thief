@@ -440,3 +440,16 @@ def test_get_hotel_info(req):
     mock_response.json.return_value = HOTELS
     result = get_hotel_info('hotel_id_list', 'session')
     assert result == FINAL_INFO
+
+
+@patch('get_location_id')
+def test_search_view(location_id):
+    """Test search view returns correct final info."""
+    from .views.default import search_view
+    mock_request = testing.DummyRequest()
+    mock_request.params['location'] = 'Seattle'
+    mock_request.params['start'] = '10/14/2016'
+    mock_request.params['end'] = '10/16/2016'
+    location_id.return_value = '136452598'
+    response = search_view(mock_request)
+    assert response == {}
