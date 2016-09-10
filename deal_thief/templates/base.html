@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Deal Thief | {{ page_title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Vendor css -->
+    <link rel="stylesheet" href="/static/vendor/css/normalize.css">
+    <link rel="stylesheet" href="/static/vendor/css/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,300,700&amp;subset=cyrillic,latin">
+
+    <!-- Custom css -->
+    <link rel="stylesheet" href="/static/assets/css/base.css">
+    <link rel="stylesheet" href="/static/assets/css/layout.css">
+    <link rel="stylesheet" href="/static/assets/css/modules.css">
+		<meta name='B-verify' content='17b28608c286faec0a06a5390ad8c4f15eb0b859'g>
+		{% block css %}{% endblock %}
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+					<a class="navbar-brand" href="/"><img id="nav-logo" src="{{ request.static_url('deal_thief:static/assets/img/dealthief-logo.png') }}"></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li {% if page_title == 'Home' %}class="current"{% endif %}><a href="/">Home</a></li>
+            <li {% if page_title == 'Search' %}class="current"{% endif %}><a href="/search">Search</a></li>
+            <li {% if page_title == 'About' %}class="current"{% endif %}><a href="/about">About</a></li>
+            <li><a data-toggle="modal" data-target="#contact-form" style="cursor: pointer;">Contact</a></li>
+						{% if is_authenticated %}
+            	<li><a href="/dashboard">Dashboard</a></li>
+						{% else %}
+            	<li {% if page_title == 'Login' %}class="current"{% endif %}><a href="/login">Login</a></li>
+						{% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+    {% block body %}{% endblock %}
+    <div class="modal fade" id="contact-form" tabindex="-1" role="dialog" aria-labelledby="contact-form">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="contact-form-title">Contact form</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <input type="text" name="name" id="name" class="form-control" placeholder="Your name" required>
+              </div>
+              <div class="form-group">
+                <input type="email" name="email" id="email" class="form-control" placeholder="Your email" required>
+              </div>
+              <div class="form-group">
+                <textarea class="form-control" id="contact-form-message" rows=14 placeholder="Your message..." required></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <a type="button" class="btn btn-primary" data-dismiss="modal">Close</a>
+            <a type="submit" class="btn btn-success">Send</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Vendor scripts -->
+		<script src="/static/vendor/js/jquery-2.2.4.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+		<!-- Custom scripts -->
+		{% block js %}{% endblock %}
+	</body>
+</html>

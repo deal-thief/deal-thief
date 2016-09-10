@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block body %}
+<main id="register" class="container-fluid portal-main">
+  <section class="row">
+    {% if error != '' %}
+      <div class="alert alert-danger">
+        <strong>Error!</strong> {{ error }}
+      </div>
+    {% endif %}
+    <form action="" method="post" class="form-signin">
+      <input type="text" name="first-name" id="first-name" class="form-control" placeholder="First name" required autofocus>
+      <input type="text" name="last-name" id="last-name" class="form-control" placeholder="Last name" required>
+      <input type="email" name="email" id="email" class="form-control" placeholder="Email" required>
+      <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+      <input type="text" name="city" id="city" class="form-control" placeholder="City" required>
+      <input type="text" name="state" id="state" class="form-control" placeholder="State" required>
+      <button class="btn btn-lg btn-success btn-block" type="submit">Register</button>
+    </form>
+  </section>
+</main>
+{% endblock %}
