@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block css %}
+
+{% endblock %}
+
+
+{% block body %}
+<main id="dashboard" class="container-fluid">
+  <h3>Search history</h3>
+  <hr>
+  {% if searches %}
+  {% for search in searches %}
+  <div class="row">
+    <div class="col-sm-8 col-sm-offset-1">
+      <h4>{{ search.creation_date }}</h4>
+      <p><strong>Location: </strong>{{ search.location }}</p>
+      <p><strong>Check in: </strong>{{ search.checkin }}</p>
+      <p><strong>Check out: </strong>{{ search.checkout }}</p>
+    </div>
+    <div class="col-sm-2">
+      <a href="/search" class="btn btn-success">View this search</a>
+    </div>
+  </div>
+  <hr>
+  {% endfor %}
+  {% endif %}
+</main>
+
+{% endblock %}
+
+
+{% block js %}
+{% endblock %}

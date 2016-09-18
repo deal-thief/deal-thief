@@ -1,0 +1,3 @@
+[run]
+source = deal_thief
+omit = deal_thief/test*

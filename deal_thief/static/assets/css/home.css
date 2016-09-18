@@ -1,0 +1,12 @@
+.navbar-default {
+	background-color: transparent;
+	border-color: transparent;
+}
+
+.navbar-default .navbar-nav>li>a {
+	color: #FFF;
+}
+
+main {
+  background: #31353E;
+}
